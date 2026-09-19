@@ -1,0 +1,13 @@
+{
+  "name": "Sibley Financial Group",
+  "short_name": "Sibley",
+  "description": "Retirement planning and wealth management in Mandeville, Louisiana.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8F6F1",
+  "theme_color": "#0A2044",
+  "icons": [
+    { "src": "assets/img/icon-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "assets/img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

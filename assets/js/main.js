@@ -1,0 +1,205 @@
+/* Sibley Financial Group — site behaviour
+   Progressive enhancement only: every page is fully readable and usable
+   with JavaScript disabled. */
+(function () {
+  'use strict';
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------------------------------------------------- sticky header --- */
+  var header = document.querySelector('.site-header');
+  if (header) {
+    var setStuck = function () {
+      header.classList.toggle('is-stuck', window.scrollY > 8);
+    };
+    setStuck();
+    window.addEventListener('scroll', setStuck, { passive: true });
+  }
+
+  /* ------------------------------------------------------- mobile nav --- */
+  var toggle = document.querySelector('.nav-toggle');
+  var nav = document.getElementById('primary-nav');
+
+  if (toggle && nav) {
+    var closeNav = function (returnFocus) {
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      toggle.setAttribute('aria-expanded', 'false');
+      nav.classList.remove('is-open');
+      if (returnFocus) toggle.focus();
+    };
+
+    toggle.addEventListener('click', function () {
+      var open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!open));
+      nav.classList.toggle('is-open', !open);
+    });
+
+    nav.addEventListener('click', function (e) {
+      if (e.target.closest('a')) closeNav(false);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeNav(true);
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target) && !toggle.contains(e.target)) closeNav(false);
+    });
+
+    window.matchMedia('(min-width: 64rem)').addEventListener('change', function (e) {
+      if (e.matches) closeNav(false);
+    });
+  }
+
+  /* ---------------------------------------------------- scroll reveal --- */
+  var revealables = document.querySelectorAll('.reveal');
+  if (revealables.length) {
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      revealables.forEach(function (el) { el.classList.add('is-visible'); });
+    } else {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+      revealables.forEach(function (el) { observer.observe(el); });
+    }
+  }
+
+  /* ------------------------------------------- count up the stat bar ---- */
+  var figures = document.querySelectorAll('[data-count-to]');
+  if (figures.length && !reduceMotion && 'IntersectionObserver' in window) {
+    var countObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        countObserver.unobserve(el);
+        var target = parseFloat(el.getAttribute('data-count-to'));
+        var prefix = el.getAttribute('data-prefix') || '';
+        var suffix = el.getAttribute('data-suffix') || '';
+        var started = null;
+        var step = function (now) {
+          if (started === null) started = now;
+          var p = Math.min((now - started) / 1200, 1);
+          var eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = prefix + Math.round(target * eased).toLocaleString('en-US') + suffix;
+          if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      });
+    }, { threshold: 0.5 });
+    figures.forEach(function (el) { countObserver.observe(el); });
+  }
+
+  /* ------------------------------------------------------- accordions --- */
+  document.querySelectorAll('.accordion__trigger').forEach(function (trigger) {
+    trigger.addEventListener('click', function () {
+      var item = trigger.closest('.accordion__item');
+      var open = trigger.getAttribute('aria-expanded') === 'true';
+      trigger.setAttribute('aria-expanded', String(!open));
+      item.classList.toggle('is-open', !open);
+    });
+  });
+
+  /* ------------------------------------------------------ contact form -- */
+  var form = document.getElementById('contact-form');
+  if (form) {
+    var status = document.getElementById('form-status');
+    var submitBtn = form.querySelector('button[type="submit"]');
+
+    var setError = function (field, message) {
+      var errorEl = document.getElementById(field.id + '-error');
+      if (errorEl) errorEl.textContent = message || '';
+      field.setAttribute('aria-invalid', message ? 'true' : 'false');
+      return !message;
+    };
+
+    var validate = function (field) {
+      var value = (field.value || '').trim();
+      if (field.hasAttribute('required') && !value) {
+        return setError(field, 'This field is required.');
+      }
+      if (field.type === 'email' && value && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
+        return setError(field, 'Enter a valid email address.');
+      }
+      if (field.type === 'tel' && value && value.replace(/\D/g, '').length < 10) {
+        return setError(field, 'Enter a 10-digit phone number.');
+      }
+      if (field.type === 'checkbox' && field.hasAttribute('required') && !field.checked) {
+        return setError(field, 'Please confirm before sending.');
+      }
+      return setError(field, '');
+    };
+
+    var fields = Array.prototype.slice.call(
+      form.querySelectorAll('input[name], select[name], textarea[name]')
+    ).filter(function (f) { return f.type !== 'hidden'; });
+
+    fields.forEach(function (field) {
+      field.addEventListener('blur', function () { validate(field); });
+      field.addEventListener('input', function () {
+        if (field.getAttribute('aria-invalid') === 'true') validate(field);
+      });
+    });
+
+    var announce = function (kind, message) {
+      if (!status) return;
+      status.className = 'form-status is-visible form-status--' + kind;
+      status.textContent = message;
+    };
+
+    form.addEventListener('submit', function (e) {
+      var valid = fields.map(validate).every(Boolean);
+      if (!valid) {
+        e.preventDefault();
+        announce('err', 'Please correct the highlighted fields and try again.');
+        var firstBad = form.querySelector('[aria-invalid="true"]');
+        if (firstBad) firstBad.focus();
+        return;
+      }
+
+      // Honeypot: silently drop anything that fills the hidden field.
+      var honey = form.querySelector('input[name="company_website"]');
+      if (honey && honey.value) { e.preventDefault(); return; }
+
+      var endpoint = form.getAttribute('action') || '';
+      // Until a real form endpoint is configured (see README), fall back to a
+      // pre-filled email so no enquiry is ever lost.
+      if (endpoint.indexOf('REPLACE_WITH') !== -1 || endpoint === '') {
+        e.preventDefault();
+        var get = function (name) {
+          var el = form.elements[name];
+          return el ? (el.value || '').trim() : '';
+        };
+        var body = [
+          'Name: ' + get('name'),
+          'Email: ' + get('email'),
+          'Phone: ' + get('phone'),
+          'Interested in: ' + get('interest'),
+          'Preferred contact: ' + get('preferred'),
+          '',
+          get('message')
+        ].join('\n');
+        announce('ok', 'Opening your email app with this message ready to send.');
+        window.location.href = 'mailto:' + (form.dataset.fallbackEmail || 'info@sibleyfinancialgroup.com') +
+          '?subject=' + encodeURIComponent('Website enquiry from ' + get('name')) +
+          '&body=' + encodeURIComponent(body);
+        return;
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.dataset.label = submitBtn.textContent;
+        submitBtn.textContent = 'Sending…';
+      }
+      announce('ok', 'Sending your request…');
+    });
+  }
+
+  /* ---------------------------------------------------- footer year ----- */
+  document.querySelectorAll('[data-year]').forEach(function (el) {
+    el.textContent = String(new Date().getFullYear());
+  });
+})();
