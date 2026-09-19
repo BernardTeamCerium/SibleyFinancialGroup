@@ -87,12 +87,15 @@
       <h2>Request your consultation</h2>
       <p class="mt-2 muted">Required fields are marked with an asterisk. We reply to every enquiry, usually within one business day.</p>
 
-      <form class="form-card mt-3" id="contact-form" method="post"
-            action="REPLACE_WITH_YOUR_FORM_ENDPOINT"
+      <form class="form-card mt-3" id="contact-form" name="contact" method="POST"
+            action="/thank-you"
+            data-netlify="true" data-netlify-honeypot="company_website"
             data-fallback-email="info@sibleyfinancialgroup.com" novalidate>
-        <!-- SETUP: replace the action above with your form endpoint (Formspree,
-             Netlify Forms, FormSubmit, or your own handler). Until then the form
-             falls back to opening the visitor's email client. See README.md. -->
+        <!-- Submissions are handled by Netlify Forms and appear under
+             Forms in the Netlify dashboard. Add a notification email there so
+             enquiries reach an inbox. The hidden form-name field below is what
+             Netlify uses to attribute the submission; do not remove it. -->
+        <input type="hidden" name="form-name" value="contact">
         <div class="field-grid">
           <div class="field">
             <label for="name">Full name <span class="req" aria-hidden="true">*</span></label>

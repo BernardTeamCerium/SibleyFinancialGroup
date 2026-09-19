@@ -20,14 +20,13 @@ public sources. **Replace these first.**
 | Email address | Every page | `info@sibleyfinancialgroup.com` |
 | Street address | `contact.html`, footer, `index.html` JSON-LD | City/state only — no street address |
 | Domain name | `<link rel="canonical">`, Open Graph tags, `sitemap.xml`, `robots.txt` | `https://www.sibleyfinancialgroup.com` |
-| Contact form endpoint | `contact.html` → `<form action="…">` | `REPLACE_WITH_YOUR_FORM_ENDPOINT` |
 | Office hours | Footer, `contact.html` | Mon–Fri, 9:00am–5:00pm CT |
 | Headshot of Troy Sibley | `about.html`, `index.html` | Crest plate stands in — see below |
 
 Fastest way to do the first four:
 
 ```bash
-grep -rn "985) 000-0000\|+19850000000\|sibleyfinancialgroup.com\|REPLACE_WITH" *.html *.xml *.txt
+grep -rn "985) 000-0000\|+19850000000\|sibleyfinancialgroup.com" *.html *.xml *.txt
 ```
 
 ### Content that should be verified
@@ -76,6 +75,7 @@ services.html        Six services in detail, plus a plain-language note on compe
 process.html         Four-step planning process and an eight-question FAQ
 contact.html         Contact form, direct details, privacy note
 disclosures.html     Disclosures, privacy statement, accessibility statement
+thank-you.html       Shown after a successful form submission (noindex)
 404.html             Not-found page
 site.webmanifest     PWA manifest (icons, theme colour)
 robots.txt           Points crawlers at the sitemap
@@ -86,7 +86,7 @@ assets/img/             Logo variants, icons, social share card
 ```
 
 Shared header and footer markup is duplicated in each page (normal for a site this size —
-no build step to go wrong). If you change a nav item, change it in all seven HTML files.
+no build step to go wrong). If you change a nav item, change it in all eight HTML files.
 
 ---
 
@@ -133,22 +133,32 @@ served as WebP with a PNG fallback via `<picture>`.
 
 ## The contact form
 
-Out of the box the form validates in the browser, then falls back to opening the
-visitor's email client with the message pre-filled — so nothing is lost before an
-endpoint is configured. It also carries a honeypot field to absorb basic bot spam.
+The form is wired to **Netlify Forms**. No third-party service, no API key, no
+server code. On submission Netlify captures the fields, filters spam via the
+`company_website` honeypot, and redirects the visitor to `thank-you.html`.
 
-To wire it to a real handler, set the `action` on `#contact-form` in `contact.html`:
+The markup Netlify depends on, in `contact.html`:
 
 ```html
-<!-- Formspree -->
-<form ... action="https://formspree.io/f/YOUR_FORM_ID" method="post">
-
-<!-- Netlify Forms -->
-<form ... action="/thank-you" method="post" name="contact" data-netlify="true">
+<form id="contact-form" name="contact" method="POST" action="/thank-you"
+      data-netlify="true" data-netlify-honeypot="company_website" novalidate>
+  <input type="hidden" name="form-name" value="contact">
 ```
 
-The JavaScript hands off to a normal form submission as soon as the action no longer
-contains `REPLACE_WITH`.
+Do not remove the hidden `form-name` field — it is how Netlify attributes the
+submission.
+
+**After the first deploy**, turn on notifications so enquiries actually reach a
+person: Netlify dashboard → **Forms** → **Form notifications** → *Add notification*
+→ *Email notification*, and enter the address that should receive them. Without
+this, submissions are stored in the dashboard but nobody is told about them.
+Send a test message through the live form and confirm it arrives.
+
+Netlify's free tier covers 100 submissions per month, which is ample here.
+
+The JavaScript still validates everything client-side before the POST. If the
+`action` is ever reverted to a placeholder containing `REPLACE_WITH`, the script
+falls back to opening the visitor's email client so no enquiry is lost.
 
 ---
 
@@ -159,18 +169,66 @@ python3 -m http.server 8000
 # then open http://localhost:8000
 ```
 
-## Deploying
+## Deploying to Netlify
 
-Any static host will do — no build command, no server runtime.
+`netlify.toml` is already in the repo: no build command, publish directory `.`,
+a rewrite for the form's redirect target, security headers (HSTS, CSP,
+nosniff, frame options, referrer and permissions policy) and sensible cache
+headers. Nothing to configure at the Netlify end beyond connecting the site.
 
-- **GitHub Pages:** Settings → Pages → deploy from this branch, root folder
-- **Netlify / Vercel / Cloudflare Pages:** no build command; publish directory `.`
-- **Traditional hosting:** upload every file, preserving the `assets/` folder structure
+### 1. Merge to `main`
 
-After deploying, update the domain in the canonical/Open Graph tags, `sitemap.xml` and
-`robots.txt`, then submit the sitemap in Google Search Console.
+The site currently lives on the `claude/sibley-financial-website-89sr0u` branch.
+Merge it into `main` first, so Netlify deploys from the default branch.
 
----
+### 2. Connect the repository
+
+1. Sign in at [app.netlify.com](https://app.netlify.com) (a free account is enough).
+2. **Add new site → Import an existing project → GitHub**, and pick
+   `BernardTeamCerium/SibleyFinancialGroup`.
+3. Netlify reads `netlify.toml`, so leave the build settings alone. Deploy.
+
+You get a temporary address like `random-name-123.netlify.app`. Check the whole
+site there before pointing the domain at it. From this point on, every push to
+`main` redeploys automatically.
+
+### 3. Point the domain
+
+In **Site configuration → Domain management → Add a domain**, enter the domain.
+Netlify then shows you exactly what to add at your registrar. Choose one:
+
+- **Easiest — change nameservers.** Netlify manages DNS. Update the two or three
+  nameservers at your registrar to the ones Netlify gives you.
+  ⚠️ This moves *all* DNS for the domain, **including email (MX records)**. If
+  the firm's email runs on that domain, copy the existing MX records into Netlify
+  DNS first, or use the option below instead.
+- **Safer if email is on the domain — keep your DNS and add records.**
+  - `www` → `CNAME` → the value Netlify shows you
+  - apex/root (`@`) → `ALIAS`/`ANAME` → `apex-loadbalancer.netlify.com` if your DNS
+    provider supports those record types — preferred, since it survives an IP change
+  - otherwise apex/root (`@`) → `A` → `75.2.60.5`
+    *(always confirm against what Netlify shows you; on High-Performance Edge the
+    address is different and appears in the pending-DNS dialog)*
+
+DNS takes anywhere from a few minutes to a few hours to propagate. Netlify
+provisions a free Let's Encrypt certificate automatically once it resolves;
+then enable **Force HTTPS** in the domain settings.
+
+### 4. Update the domain in the code
+
+Once the real domain is settled, replace `https://www.sibleyfinancialgroup.com`
+throughout — canonical tags, Open Graph tags, `sitemap.xml`, `robots.txt` and the
+JSON-LD in `index.html` and `about.html`. Getting this wrong hurts search
+ranking, so it is worth doing carefully.
+
+### 5. After launch
+
+- Netlify → **Forms** → add an email notification, then send a test enquiry.
+- Submit `https://yourdomain.com/sitemap.xml` in
+  [Google Search Console](https://search.google.com/search-console).
+- Claim or update the firm's **Google Business Profile** and point it at the new
+  site — for a local advisory practice this drives more traffic than anything else.
+- Check the site on a real phone.
 
 ## Accessibility & performance notes
 
