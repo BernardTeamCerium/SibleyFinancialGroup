@@ -164,10 +164,18 @@ official corporate sponsor, LSU issues approved marks and brand guidelines —
 there is a marked `.mark-slot` on the page ready for one, and the
 `--gameday-purple` / `--gameday-gold` tokens are already in `styles.css`.
 
-**Photographs.** The gallery ships four empty `.photo-slot` frames rather than
-placeholder image files. Replace each `<div class="photo-slot">` with an `<img>`
-at the aspect ratio labelled on it — the first is 3:2 at desktop, the rest 3:4.
-Real photographs of real clients will do more for this page than any copy.
+**Photographs.** The hero runs on `assets/img/event-suite.jpg`. The gallery
+holds two supplied photographs (`event-stadium`, `event-helmet`) plus three
+empty `.photo-slot` frames — replace each `<div class="photo-slot">` with an
+`<img>` at the 3:4 ratio labelled on it. Real photographs of real clients will
+do more for this page than any copy.
+
+⚠️ **Confirm rights to the stadium and helmet photographs.** Copyright is a
+separate question from the trademark point above and applies even to images
+that are freely findable online. If the firm does not own them or hold a
+licence, replace them — the page works with any photographs, and the layout
+adapts. The suite photograph appears to have been produced for Sibley and
+carries the firm's own crest, so it is the safe one.
 
 **Every event detail is a placeholder.** They render as conspicuous red dashed
 markers so the page cannot go out with the wrong date on it:
@@ -183,11 +191,31 @@ pre-game meeting spot and time, parking allowance per family, RSVP deadline.
 
 ### `gifts.html` — choose and claim
 
-Twelve gifts, choose up to two. The selection controls are real checkboxes inside
-labels, so they work without JavaScript and by keyboard; the script only adds the
-running count and enforces the limit. To change the catalogue, edit the
-`.gift-grid` block — each item is one `<label class="gift">`. The limit lives in
-`data-gift-limit="2"` on the form.
+Laid out as a small shop: category filter chips, a product grid, per-item size
+selectors, an "Add to My Gifts" button state and a sticky basket bar listing what
+has been chosen, then a checkout-style shipping step.
+
+Twelve gifts, choose up to two. The controls are real checkboxes inside labels,
+so selection works with no JavaScript and by keyboard; the script only adds
+filtering, the running count and the limit. A chosen item stays visible even when
+its category is filtered out, so the basket never disagrees with the grid.
+
+To change the catalogue, edit the `.shop-grid` block — each item is one
+`<label class="product">` carrying a `data-category`. The limit lives in
+`data-gift-limit="2"` on the form; the filter chips are `.shop-filter` buttons
+whose `data-filter` must match a category exactly.
+
+**Product photography.** Each card shows the crest on a tinted ground as a
+stand-in. To use real product shots, replace the
+`<img class="product__crest" …>` inside `.product__media` with a 4:3 photograph:
+
+```html
+<img src="assets/img/products/quarter-zip.jpg" alt="Navy quarter-zip with the Sibley crest"
+     width="800" height="600" loading="lazy">
+```
+
+An `assets/img/products/` folder is already in place. Shoot or crop everything to
+the same ratio and the grid stays even.
 
 Apparel items carry their own size `<select>`. One item (the game tickets) is
 marked up as `.gift--feature` with a gold "Limited" ribbon; add or remove that

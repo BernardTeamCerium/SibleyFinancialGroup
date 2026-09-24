@@ -103,6 +103,34 @@
     });
   });
 
+  /* ------------------------------------------------ shop category filter - */
+  /* Filtering is an enhancement only: with no JavaScript every product shows. */
+  (function () {
+    var chips = document.querySelectorAll('.shop-filter');
+    var grid = document.getElementById('shop-grid');
+    if (!chips.length || !grid) return;
+    var products = Array.prototype.slice.call(grid.querySelectorAll('.product'));
+    var empty = document.getElementById('shop-empty');
+
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        var want = chip.getAttribute('data-filter');
+        chips.forEach(function (c) {
+          c.setAttribute('aria-pressed', String(c === chip));
+        });
+        var shown = 0;
+        products.forEach(function (p) {
+          var match = want === 'all' || p.getAttribute('data-category') === want;
+          // A chosen item stays visible so the basket never disagrees with the grid.
+          var chosen = p.querySelector('[data-gift]').checked;
+          p.hidden = !(match || chosen);
+          if (!p.hidden) shown++;
+        });
+        if (empty) empty.hidden = shown > 0;
+      });
+    });
+  })();
+
   /* -------------------------------------------- gift selection limit ---- */
   /* The checkboxes work on their own; this only adds the running count and
      stops a selection going past the limit. */
@@ -113,6 +141,7 @@
     var countEl = form.querySelector('#gift-count');
     var noteEl = form.querySelector('#gift-counter-note');
     var errEl = form.querySelector('#gifts-error');
+    var namesEl = form.querySelector('#gift-names');
     if (!boxes.length) return;
 
     var sync = function () {
@@ -120,6 +149,11 @@
       var atLimit = chosen.length >= limit;
       boxes.forEach(function (b) { b.disabled = atLimit && !b.checked; });
       if (countEl) countEl.textContent = String(chosen.length);
+      if (namesEl) {
+        namesEl.textContent = chosen.length
+          ? '\u2014 ' + chosen.map(function (b) { return b.value; }).join(', ')
+          : '';
+      }
       if (noteEl) {
         noteEl.textContent = atLimit ? '\u2014 that is your two. Untick one to swap.' : '';
         noteEl.className = atLimit ? 'gift-counter__full' : '';

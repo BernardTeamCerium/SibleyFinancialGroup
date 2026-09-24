@@ -83,7 +83,7 @@
   <div class="shell">
     <div class="section-head section-head--center">
       <p class="eyebrow">Step one</p>
-      <h2>Choose up to two</h2>
+      <h2>Choose any two</h2>
       <p>Twelve things to pick from, all carrying the Sibley crest, and all things we use ourselves. Select your items, then fill in the shipping details below.</p>
     </div>
 
@@ -93,131 +93,175 @@
           data-gift-limit="2" data-fallback-email="info@sibleyfinancialgroup.com" novalidate>
       <input type="hidden" name="form-name" value="gift-claim">
 
-      <div class="gift-grid">
-        <label class="gift">
+      <div class="shop-filters" role="group" aria-label="Filter gifts by category">
+        <button class="shop-filter" type="button" data-filter="all" aria-pressed="true">All</button><button class="shop-filter" type="button" data-filter="Apparel" aria-pressed="false">Apparel</button><button class="shop-filter" type="button" data-filter="Drinkware" aria-pressed="false">Drinkware</button><button class="shop-filter" type="button" data-filter="Bags &amp; Gear" aria-pressed="false">Bags &amp; Gear</button><button class="shop-filter" type="button" data-filter="Experiences" aria-pressed="false">Experiences</button>
+      </div>
+
+      <div class="shop-grid" id="shop-grid">
+        <label class="product" data-category="Apparel">
           <input type="checkbox" name="gifts" value="Crest Quarter-Zip" data-gift>
-          <span class="gift__inner">
-            <span class="gift__tick"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></span>
-            <span class="card__icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3 4.5 5.4 3 10.2l3 1.1V21h12v-9.7l3-1.1-1.5-4.8L15 3Z"/><path d="M12 3.4V12"/><path d="M9 3a3 3 0 0 0 6 0"/></svg></span>
-            <span class="gift__name">Crest Quarter-Zip</span>
-            <span class="gift__desc">Mid-weight performance pullover with an embroidered crest. Navy. The one people actually wear.</span>
-            <div class="gift__opt"><label for="quarterzip-size">Size</label><select id="quarterzip-size" name="quarterzip_size"><option>Small</option><option>Medium</option><option>Large</option><option>X-Large</option><option>2XL</option><option>3XL</option></select></div>
+          <span class="product__inner">
+            <span class="product__media"><img class="product__crest" src="assets/img/crest-sm.png" alt="" width="240" height="239" loading="lazy"></span>
+            <span class="product__body">
+              <span class="product__name">Crest Quarter-Zip</span>
+              <span class="product__desc">Mid-weight performance pullover with an embroidered crest. Navy. The one people actually wear.</span>
+              <span class="product__price">Complimentary</span>
+              <span class="product__opt"><label for="quarterzip-size">Size</label><select id="quarterzip-size" name="quarterzip_size"><option>Small</option><option>Medium</option><option>Large</option><option>X-Large</option><option>2XL</option><option>3XL</option></select></span>
+              <span class="product__action"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span class="add">Add to My Gifts</span><span class="added">Added</span></span>
+            </span>
           </span>
         </label>
-        <label class="gift">
+        <label class="product" data-category="Apparel">
           <input type="checkbox" name="gifts" value="Crest Polo Shirt" data-gift>
-          <span class="gift__inner">
-            <span class="gift__tick"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></span>
-            <span class="card__icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3 4.5 5.2 3 9.8l3 1.2V21h12v-10l3-1.2-1.5-4.6L15 3a3 3 0 0 1-6 0Z"/></svg></span>
-            <span class="gift__name">Crest Polo Shirt</span>
-            <span class="gift__desc">Breathable performance polo with the crest on the chest. Navy.</span>
-            <div class="gift__opt"><label for="polo-size">Size</label><select id="polo-size" name="polo_size"><option>Small</option><option>Medium</option><option>Large</option><option>X-Large</option><option>2XL</option><option>3XL</option></select></div>
+          <span class="product__inner">
+            <span class="product__media"><img class="product__crest" src="assets/img/crest-sm.png" alt="" width="240" height="239" loading="lazy"></span>
+            <span class="product__body">
+              <span class="product__name">Crest Polo Shirt</span>
+              <span class="product__desc">Breathable performance polo with the crest on the chest. Navy.</span>
+              <span class="product__price">Complimentary</span>
+              <span class="product__opt"><label for="polo-size">Size</label><select id="polo-size" name="polo_size"><option>Small</option><option>Medium</option><option>Large</option><option>X-Large</option><option>2XL</option><option>3XL</option></select></span>
+              <span class="product__action"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span class="add">Add to My Gifts</span><span class="added">Added</span></span>
+            </span>
           </span>
         </label>
-        <label class="gift">
+        <label class="product" data-category="Bags &amp; Gear">
           <input type="checkbox" name="gifts" value="Book Bag" data-gift>
-          <span class="gift__inner">
-            <span class="gift__tick"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></span>
-            <span class="card__icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9.5A4.5 4.5 0 0 1 9.5 5h5A4.5 4.5 0 0 1 19 9.5V21H5Z"/><path d="M9 5V4a3 3 0 0 1 6 0v1"/><path d="M9.5 13h5"/></svg></span>
-            <span class="gift__name">Book Bag</span>
-            <span class="gift__desc">Padded laptop compartment, water-bottle pockets, crest on the front panel.</span>
-            
+          <span class="product__inner">
+            <span class="product__media"><img class="product__crest" src="assets/img/crest-sm.png" alt="" width="240" height="239" loading="lazy"></span>
+            <span class="product__body">
+              <span class="product__name">Book Bag</span>
+              <span class="product__desc">Padded laptop compartment, water-bottle pockets, crest on the front panel.</span>
+              <span class="product__price">Complimentary</span>
+              
+              <span class="product__action"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span class="add">Add to My Gifts</span><span class="added">Added</span></span>
+            </span>
           </span>
         </label>
-        <label class="gift">
+        <label class="product" data-category="Drinkware">
           <input type="checkbox" name="gifts" value="Coffee Mug" data-gift>
-          <span class="gift__inner">
-            <span class="gift__tick"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></span>
-            <span class="card__icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h12v8.5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4Z"/><path d="M16 8.5h2.2a2.8 2.8 0 0 1 0 5.6H16"/></svg></span>
-            <span class="gift__name">Coffee Mug</span>
-            <span class="gift__desc">Ceramic 15oz mug with the crest. Dishwasher safe, unlike the good one.</span>
-            
+          <span class="product__inner">
+            <span class="product__media"><img class="product__crest" src="assets/img/crest-sm.png" alt="" width="240" height="239" loading="lazy"></span>
+            <span class="product__body">
+              <span class="product__name">Coffee Mug</span>
+              <span class="product__desc">Ceramic 15oz mug with the crest. Dishwasher safe, unlike the good one.</span>
+              <span class="product__price">Complimentary</span>
+              
+              <span class="product__action"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span class="add">Add to My Gifts</span><span class="added">Added</span></span>
+            </span>
           </span>
         </label>
-        <label class="gift">
+        <label class="product" data-category="Drinkware">
           <input type="checkbox" name="gifts" value="Water Bottle" data-gift>
-          <span class="gift__inner">
-            <span class="gift__tick"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></span>
-            <span class="card__icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2.5h4v2.6l1.7 2.4V21H8.3V7.5L10 5.1Z"/><path d="M8.3 11.5h7.4"/></svg></span>
-            <span class="gift__name">Water Bottle</span>
-            <span class="gift__desc">Stainless 24oz bottle, vacuum sealed. Cold stays cold through a Louisiana August.</span>
-            
+          <span class="product__inner">
+            <span class="product__media"><img class="product__crest" src="assets/img/crest-sm.png" alt="" width="240" height="239" loading="lazy"></span>
+            <span class="product__body">
+              <span class="product__name">Water Bottle</span>
+              <span class="product__desc">Stainless 24oz bottle, vacuum sealed. Cold stays cold through a Louisiana August.</span>
+              <span class="product__price">Complimentary</span>
+              
+              <span class="product__action"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span class="add">Add to My Gifts</span><span class="added">Added</span></span>
+            </span>
           </span>
         </label>
-        <label class="gift">
+        <label class="product" data-category="Drinkware">
           <input type="checkbox" name="gifts" value="Insulated Tumbler" data-gift>
-          <span class="gift__inner">
-            <span class="gift__tick"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></span>
-            <span class="card__icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10l-.9 15.2a2 2 0 0 1-2 1.8H9.9a2 2 0 0 1-2-1.8Z"/><path d="M6.7 9h10.6"/></svg></span>
-            <span class="gift__name">Insulated Tumbler</span>
-            <span class="gift__desc">Stainless 20oz tumbler with a slide lid. Fits a car cup holder.</span>
-            
+          <span class="product__inner">
+            <span class="product__media"><img class="product__crest" src="assets/img/crest-sm.png" alt="" width="240" height="239" loading="lazy"></span>
+            <span class="product__body">
+              <span class="product__name">Insulated Tumbler</span>
+              <span class="product__desc">Stainless 20oz tumbler with a slide lid. Fits a car cup holder.</span>
+              <span class="product__price">Complimentary</span>
+              
+              <span class="product__action"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span class="add">Add to My Gifts</span><span class="added">Added</span></span>
+            </span>
           </span>
         </label>
-        <label class="gift">
+        <label class="product" data-category="Apparel">
           <input type="checkbox" name="gifts" value="Game Day Cap" data-gift>
-          <span class="gift__inner">
-            <span class="gift__tick"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></span>
-            <span class="card__icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.6 15a8.4 8.4 0 0 1 16.8 0Z"/><path d="M3.6 15h17.6a1.2 1.2 0 0 1 0 2.4H3.6Z"/></svg></span>
-            <span class="gift__name">Game Day Cap</span>
-            <span class="gift__desc">Structured cap with an embroidered crest. Adjustable, one size.</span>
-            
+          <span class="product__inner">
+            <span class="product__media"><img class="product__crest" src="assets/img/crest-sm.png" alt="" width="240" height="239" loading="lazy"></span>
+            <span class="product__body">
+              <span class="product__name">Game Day Cap</span>
+              <span class="product__desc">Structured cap with an embroidered crest. Adjustable, one size.</span>
+              <span class="product__price">Complimentary</span>
+              
+              <span class="product__action"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span class="add">Add to My Gifts</span><span class="added">Added</span></span>
+            </span>
           </span>
         </label>
-        <label class="gift">
+        <label class="product" data-category="Bags &amp; Gear">
           <input type="checkbox" name="gifts" value="Soft Cooler Bag" data-gift>
-          <span class="gift__inner">
-            <span class="gift__tick"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></span>
-            <span class="card__icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 8h15l-1 12.5h-13Z"/><path d="M8.5 8V6a3.5 3.5 0 0 1 7 0v2"/></svg></span>
-            <span class="gift__name">Soft Cooler Bag</span>
-            <span class="gift__desc">Leak-resistant 18-can cooler for the tailgate or the boat.</span>
-            
+          <span class="product__inner">
+            <span class="product__media"><img class="product__crest" src="assets/img/crest-sm.png" alt="" width="240" height="239" loading="lazy"></span>
+            <span class="product__body">
+              <span class="product__name">Soft Cooler Bag</span>
+              <span class="product__desc">Leak-resistant 18-can cooler for the tailgate or the boat.</span>
+              <span class="product__price">Complimentary</span>
+              
+              <span class="product__action"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span class="add">Add to My Gifts</span><span class="added">Added</span></span>
+            </span>
           </span>
         </label>
-        <label class="gift">
+        <label class="product" data-category="Bags &amp; Gear">
           <input type="checkbox" name="gifts" value="Tailgate Chair" data-gift>
-          <span class="gift__inner">
-            <span class="gift__tick"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></span>
-            <span class="card__icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 3 4 11h6l4-11"/><path d="M7.5 14 6 21"/><path d="M16.5 14 18 21"/><path d="M8.2 11h7.6"/></svg></span>
-            <span class="gift__name">Tailgate Chair</span>
-            <span class="gift__desc">Folding chair with a carry bag, cup holder and the crest on the back.</span>
-            
+          <span class="product__inner">
+            <span class="product__media"><img class="product__crest" src="assets/img/crest-sm.png" alt="" width="240" height="239" loading="lazy"></span>
+            <span class="product__body">
+              <span class="product__name">Tailgate Chair</span>
+              <span class="product__desc">Folding chair with a carry bag, cup holder and the crest on the back.</span>
+              <span class="product__price">Complimentary</span>
+              
+              <span class="product__action"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span class="add">Add to My Gifts</span><span class="added">Added</span></span>
+            </span>
           </span>
         </label>
-        <label class="gift">
+        <label class="product" data-category="Bags &amp; Gear">
           <input type="checkbox" name="gifts" value="Golf Umbrella" data-gift>
-          <span class="gift__inner">
-            <span class="gift__tick"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></span>
-            <span class="card__icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v15.5a2.5 2.5 0 0 0 5 0"/><path d="M2.5 12a9.5 9.5 0 0 1 19 0Z"/></svg></span>
-            <span class="gift__name">Golf Umbrella</span>
-            <span class="gift__desc">Full-size vented canopy in navy and crimson. It is Louisiana; you will use it.</span>
-            
+          <span class="product__inner">
+            <span class="product__media"><img class="product__crest" src="assets/img/crest-sm.png" alt="" width="240" height="239" loading="lazy"></span>
+            <span class="product__body">
+              <span class="product__name">Golf Umbrella</span>
+              <span class="product__desc">Full-size vented canopy in navy and crimson. It is Louisiana; you will use it.</span>
+              <span class="product__price">Complimentary</span>
+              
+              <span class="product__action"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span class="add">Add to My Gifts</span><span class="added">Added</span></span>
+            </span>
           </span>
         </label>
-        <label class="gift">
+        <label class="product" data-category="Bags &amp; Gear">
           <input type="checkbox" name="gifts" value="Leather Portfolio" data-gift>
-          <span class="gift__inner">
-            <span class="gift__tick"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></span>
-            <span class="card__icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H19v18H5.5A1.5 1.5 0 0 1 4 19.5Z"/><path d="M8 3v18"/></svg></span>
-            <span class="gift__name">Leather Portfolio</span>
-            <span class="gift__desc">Refillable padfolio with a debossed crest &mdash; the one we use ourselves.</span>
-            
+          <span class="product__inner">
+            <span class="product__media"><img class="product__crest" src="assets/img/crest-sm.png" alt="" width="240" height="239" loading="lazy"></span>
+            <span class="product__body">
+              <span class="product__name">Leather Portfolio</span>
+              <span class="product__desc">Refillable padfolio with a debossed crest &mdash; the one we use ourselves.</span>
+              <span class="product__price">Complimentary</span>
+              
+              <span class="product__action"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span class="add">Add to My Gifts</span><span class="added">Added</span></span>
+            </span>
           </span>
         </label>
-        <label class="gift gift--feature">
+        <label class="product" data-category="Experiences">
           <input type="checkbox" name="gifts" value="Two Game Tickets" data-gift>
-          <span class="gift__inner">
-            <span class="gift__flag">Limited</span><span class="gift__tick"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg></span>
-            <span class="card__icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5a2 2 0 0 0 0 7V19h18v-3.5a2 2 0 0 1 0-7V5H3Z"/><path d="M14 5v14"/></svg></span>
-            <span class="gift__name">Two Game Tickets</span>
-            <span class="gift__desc">A pair of tickets to an LSU home game. Strictly limited &mdash; we will call you to sort the fixture and the seats.</span>
-            
+          <span class="product__inner">
+            <span class="product__media"><span class="product__flag">Limited</span><img class="product__crest" src="assets/img/crest-sm.png" alt="" width="240" height="239" loading="lazy"></span>
+            <span class="product__body">
+              <span class="product__name">Two Game Tickets</span>
+              <span class="product__desc">A pair of tickets to an LSU home game. Strictly limited &mdash; we will call you to sort the fixture and the seats.</span>
+              <span class="product__price">Complimentary</span>
+              
+              <span class="product__action"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span class="add">Add to My Gifts</span><span class="added">Added</span></span>
+            </span>
           </span>
         </label>
       </div>
 
-      <div class="gift-counter" id="gift-counter" hidden>
-        <p><strong><span id="gift-count">0</span> of 2</strong> selected <span id="gift-counter-note"></span></p>
+      <p class="text-center mt-2 muted small" id="shop-empty" hidden>Nothing in that category yet.</p>
+
+      <div class="shop-bar" id="gift-counter" hidden>
+        <p><strong><span id="gift-count">0</span> of 2</strong> chosen
+          <span class="shop-bar__items" id="gift-names"></span>
+          <span id="gift-counter-note"></span></p>
         <a class="btn btn--crimson btn--sm" href="#shipping">Continue to Shipping</a>
       </div>
       <p class="field__error mt-2" id="gifts-error" aria-live="polite"></p>
@@ -227,7 +271,7 @@
 
       <div class="section-head section-head--center" id="shipping" style="margin-top:clamp(3rem,6vw,4.5rem)">
         <p class="eyebrow">Step two</p>
-        <h2>Where should we send it?</h2>
+        <h2>Where should we send them?</h2>
         <p>We ship within the United States, usually within two weeks.</p>
       </div>
 
