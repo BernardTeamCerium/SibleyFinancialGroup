@@ -103,6 +103,44 @@
     });
   });
 
+  /* -------------------------------------------- gift selection limit ---- */
+  /* The checkboxes work on their own; this only adds the running count and
+     stops a selection going past the limit. */
+  document.querySelectorAll('form[data-gift-limit]').forEach(function (form) {
+    var limit = parseInt(form.getAttribute('data-gift-limit'), 10) || 2;
+    var boxes = Array.prototype.slice.call(form.querySelectorAll('[data-gift]'));
+    var bar = form.querySelector('#gift-counter');
+    var countEl = form.querySelector('#gift-count');
+    var noteEl = form.querySelector('#gift-counter-note');
+    var errEl = form.querySelector('#gifts-error');
+    if (!boxes.length) return;
+
+    var sync = function () {
+      var chosen = boxes.filter(function (b) { return b.checked; });
+      var atLimit = chosen.length >= limit;
+      boxes.forEach(function (b) { b.disabled = atLimit && !b.checked; });
+      if (countEl) countEl.textContent = String(chosen.length);
+      if (noteEl) {
+        noteEl.textContent = atLimit ? '\u2014 that is your two. Untick one to swap.' : '';
+        noteEl.className = atLimit ? 'gift-counter__full' : '';
+      }
+      if (bar) bar.hidden = chosen.length === 0;
+      if (chosen.length && errEl) errEl.textContent = '';
+    };
+
+    boxes.forEach(function (b) { b.addEventListener('change', sync); });
+    sync();
+
+    form.addEventListener('submit', function (e) {
+      if (boxes.some(function (b) { return b.checked; })) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if (errEl) errEl.textContent = 'Please choose at least one gift.';
+      boxes[0].focus();
+      boxes[0].closest('.gift').scrollIntoView({ block: 'center' });
+    }, true);   // capture phase: runs before the shared form handler
+  });
+
   /* ------------------------------------------------------ site forms ---- */
   /* Any form carrying .js-form gets validation, honeypot handling and the
      email fallback. Scoped per form so a page can hold more than one. */

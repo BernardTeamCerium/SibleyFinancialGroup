@@ -21,7 +21,10 @@ public sources. **Replace these first.**
 | Street address | `contact.html`, footer, `index.html` JSON-LD | City/state only — no street address |
 | Domain name | `<link rel="canonical">`, Open Graph tags, `sitemap.xml`, `robots.txt` | `https://www.sibleyfinancialgroup.com` |
 | Office hours | Footer, `contact.html` | Mon–Fri, 9:00am–5:00pm CT |
-| Headshot of Troy Sibley | `about.html`, `index.html` | Crest plate stands in — see below |
+| Headshot of Troy Sibley | `about.html`, `index.html`, `event.html` | Crest plate stands in — see below |
+| Welcome video | `welcome.html` | Poster panel stands in — see Campaign pages |
+| Gift box photograph | `assets/img/welcome-gift-box.jpg` | Branded panel stands in |
+| Event details | `event.html` | Red dashed placeholders throughout |
 
 Fastest way to do the first four:
 
@@ -75,7 +78,12 @@ services.html        Six services in detail, plus a plain-language note on compe
 process.html         Four-step planning process and an eight-question FAQ
 contact.html         Contact form, direct details, privacy note
 disclosures.html     Disclosures, privacy statement, accessibility statement
-thank-you.html       Shown after a successful form submission (noindex)
+event.html           Client appreciation LSU game-day event + registration
+gifts.html           Choose up to two appreciation gifts + shipping details
+welcome.html         Sent to new clients: welcome video, gift box, first 90 days (noindex)
+thank-you.html       Shown after a successful contact submission (noindex)
+thank-you-rsvp.html  After an event registration (noindex)
+thank-you-gift.html  After a gift claim (noindex)
 404.html             Not-found page
 site.webmanifest     PWA manifest (icons, theme colour)
 robots.txt           Points crawlers at the sitemap
@@ -86,7 +94,7 @@ assets/img/             Logo variants, icons, social share card
 ```
 
 Shared header and footer markup is duplicated in each page (normal for a site this size —
-no build step to go wrong). If you change a nav item, change it in all eight HTML files.
+no build step to go wrong). If you change a nav item, change it in every HTML file.
 
 ---
 
@@ -131,6 +139,63 @@ served as WebP with a PNG fallback via `<picture>`.
 
 ---
 
+## Campaign pages
+
+Three pages are linked from the footer rather than the primary nav, since they
+are sent directly to clients by email or text rather than browsed to. All three
+are marked `noindex, follow` and kept out of `sitemap.xml`: seats and stock are
+limited and the offers are for existing clients, so they should not turn up in
+search results. The links still work for anyone you send them to.
+
+### `event.html` — client appreciation event
+
+**Every event detail is a placeholder.** They render as conspicuous red dashed
+markers so the page cannot go out with the wrong date on it:
+
+```bash
+grep -n 'class="placeholder"' event.html
+```
+
+Replace the text inside each `<span class="placeholder">…</span>` and delete the
+wrapper. Once no page uses the class, delete the `.placeholder` rule from
+`styles.css` too. Outstanding: opponent, date, kickoff time, venue, section/suite,
+pre-game meeting spot and time, parking allowance per family, RSVP deadline.
+
+### `gifts.html` — choose and claim
+
+Six gifts, choose up to two. The selection controls are real checkboxes inside
+labels, so they work without JavaScript and by keyboard; the script only adds the
+running count and enforces the limit. To change the catalogue, edit the
+`.gift-grid` block — each item is one `<label class="gift">`. The limit lives in
+`data-gift-limit="2"` on the form.
+
+Submissions include **home addresses**. Set a retention habit: export what you
+need to fulfil, then delete the submissions from the Netlify dashboard. Say so in
+the privacy statement on `disclosures.html`.
+
+### `welcome.html` — new client welcome
+
+Sent to a client after onboarding. Marked `noindex` — it is a private page, not
+search content. Two things still to add, both marked on the page:
+
+- **The welcome video.** Record 60–120 seconds to camera. The page source carries
+  a setup comment with ready-made markup for a YouTube embed or a self-hosted MP4.
+  ⚠️ If you embed from YouTube or Vimeo, widen the `Content-Security-Policy` in
+  `netlify.toml` to allow their frame and media sources, or the embed is blocked.
+- **The gift box photograph.** Replace `assets/img/welcome-gift-box.jpg`, keeping
+  the filename so nothing else needs changing. Landscape, around 1200×800.
+
+A branded navy panel stands in for both so the page looks finished in preview.
+
+⚠️ **Compliance, before any of these circulate.** Client gifts and event
+hospitality from an insurance-licensed practice are regulated — gift value limits
+apply, and Louisiana has anti-rebating rules restricting inducements offered in
+connection with insurance. The disclosure wording on both pages states the gifts
+are not contingent on any purchase, but a compliance supervisor should confirm the
+value, the wording and who may be offered what before these go out.
+
+---
+
 ## The contact form
 
 The form is wired to **Netlify Forms**. No third-party service, no API key, no
@@ -148,13 +213,22 @@ The markup Netlify depends on, in `contact.html`:
 Do not remove the hidden `form-name` field — it is how Netlify attributes the
 submission.
 
-**After the first deploy**, turn on notifications so enquiries actually reach a
-person: Netlify dashboard → **Forms** → **Form notifications** → *Add notification*
-→ *Email notification*, and enter the address that should receive them. Without
-this, submissions are stored in the dashboard but nobody is told about them.
-Send a test message through the live form and confirm it arrives.
+The site has **three** Netlify forms, each with its own confirmation page:
 
-Netlify's free tier covers 100 submissions per month, which is ample here.
+| Form name | Page | Redirects to |
+|---|---|---|
+| `contact` | `contact.html` | `/thank-you` |
+| `event-rsvp` | `event.html` | `/thank-you-rsvp` |
+| `gift-claim` | `gifts.html` | `/thank-you-gift` |
+
+**After the first deploy**, turn on notifications **for each form** so submissions
+actually reach a person: Netlify dashboard → **Forms** → pick the form → **Form
+notifications** → *Add notification* → *Email notification*. Without this,
+submissions are stored in the dashboard but nobody is told about them. Send a test
+through each live form and confirm it arrives.
+
+Netlify's free tier covers 100 submissions per month **across all forms combined**.
+If you send the gift page to a large client list, watch that ceiling.
 
 The JavaScript still validates everything client-side before the POST. If the
 `action` is ever reverted to a placeholder containing `REPLACE_WITH`, the script
