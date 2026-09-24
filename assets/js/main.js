@@ -103,10 +103,11 @@
     });
   });
 
-  /* ------------------------------------------------------ contact form -- */
-  var form = document.getElementById('contact-form');
-  if (form) {
-    var status = document.getElementById('form-status');
+  /* ------------------------------------------------------ site forms ---- */
+  /* Any form carrying .js-form gets validation, honeypot handling and the
+     email fallback. Scoped per form so a page can hold more than one. */
+  document.querySelectorAll('form.js-form').forEach(function (form) {
+    var status = form.querySelector('.form-status');
     var submitBtn = form.querySelector('button[type="submit"]');
 
     var setError = function (field, message) {
@@ -196,7 +197,7 @@
       }
       announce('ok', 'Sending your request…');
     });
-  }
+  });
 
   /* ---------------------------------------------------- footer year ----- */
   document.querySelectorAll('[data-year]').forEach(function (el) {

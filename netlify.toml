@@ -12,6 +12,11 @@
   to = "/thank-you.html"
   status = 200
 
+[[redirects]]
+  from = "/thank-you-rsvp"
+  to = "/thank-you-rsvp.html"
+  status = 200
+
 [[headers]]
   for = "/*"
   [headers.values]
