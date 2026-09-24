@@ -162,45 +162,24 @@
     <div class="section-head section-head--center">
       <p class="eyebrow">The day itself</p>
       <h2>Purple, gold and a very loud stadium</h2>
-      <p>Add your own photographs to the empty frames &mdash; real pictures of real clients will do more for this page than anything we could write.</p>
+      <p>Good food, better company, and a view of the field you do not get from the cheap seats.</p>
     </div>
-    <!-- SETUP — photographs.
-         The first two frames hold supplied photographs; the rest are empty
-         slots. Replace each <div class="photo-slot"> with an <img> at the
-         aspect ratio labelled on it (lead frame wide, the others portrait):
-           <img src="assets/img/your-photo.jpg" alt="..."
-                width="1200" height="1600" loading="lazy"> -->
-    <div class="photo-strip reveal">
+    <!-- SETUP — photographs. To add more, copy a <figure> and drop in your own
+         image. The gallery sizes alternate wide / portrait / portrait / wide,
+         so add them in pairs to keep the rhythm. -->
+    <div class="gallery reveal">
       <figure>
-        <picture>
-          <source srcset="assets/img/event-stadium.webp" type="image/webp">
-          <img src="assets/img/event-stadium.jpg"
-               alt="Tiger Stadium in Baton Rouge at sunset, seen from the air."
-               width="1400" height="788" loading="lazy">
-        </picture>
-        <figcaption>Tiger Stadium, Baton Rouge</figcaption>
+        <picture><source srcset="assets/img/event-suite.webp" type="image/webp"><img src="assets/img/event-suite.jpg" alt="Clients and their families in the Sibley Financial Group suite at Tiger Stadium." width="1672" height="941" loading="lazy" decoding="async"></picture>
+        <figcaption>Our suite, last season</figcaption>
       </figure>
       <figure>
-        <picture>
-          <source srcset="assets/img/event-helmet.webp" type="image/webp">
-          <img src="assets/img/event-helmet.jpg"
-               alt="A gold LSU football helmet in close-up."
-               width="447" height="447" loading="lazy">
-        </picture>
+        <picture><source srcset="assets/img/event-helmet.webp" type="image/webp"><img src="assets/img/event-helmet.jpg" alt="A gold LSU football helmet in close-up." width="447" height="447" loading="lazy" decoding="async"></picture>
         <figcaption>Kickoff</figcaption>
       </figure>
-      <div class="photo-slot">
-          <picture><source srcset="assets/img/crest.webp" type="image/webp"><img src="assets/img/crest.png" alt="" class="photo-slot__crest" loading="lazy" decoding="async" aria-hidden="true"></picture>
-          <span class="photo-slot__label"><strong>Portrait &mdash; 3:4</strong>Families arriving, kids in jerseys.</span>
-        </div>
-      <div class="photo-slot">
-          <picture><source srcset="assets/img/crest.webp" type="image/webp"><img src="assets/img/crest.png" alt="" class="photo-slot__crest" loading="lazy" decoding="async" aria-hidden="true"></picture>
-          <span class="photo-slot__label"><strong>Portrait &mdash; 3:4</strong>The spread. People always ask about the food.</span>
-        </div>
-      <div class="photo-slot">
-          <picture><source srcset="assets/img/crest.webp" type="image/webp"><img src="assets/img/crest.png" alt="" class="photo-slot__crest" loading="lazy" decoding="async" aria-hidden="true"></picture>
-          <span class="photo-slot__label"><strong>Portrait &mdash; 3:4</strong>Troy with clients in the stands.</span>
-        </div>
+      <figure>
+        <picture><source srcset="assets/img/event-stadium.webp" type="image/webp"><img src="assets/img/event-stadium.jpg" alt="Tiger Stadium in Baton Rouge at sunset, seen from the air." width="1400" height="788" loading="lazy" decoding="async"></picture>
+        <figcaption>Tiger Stadium, Baton Rouge</figcaption>
+      </figure>
     </div>
     <p class="text-center mt-3">
       <span class="mark-slot">
@@ -208,6 +187,15 @@
         If Sibley Financial Group is ever granted an LSU trademark licence, the approved mark goes here, sized to their brand guidelines. Until then this page carries no university marks.
       </span>
     </p>
+  </div>
+</section>
+
+<section class="band">
+  <picture><source srcset="assets/img/event-stadium.webp" type="image/webp"><img src="assets/img/event-stadium.jpg" alt="" width="1400" height="788" loading="lazy" decoding="async"></picture>
+  <div class="shell shell--narrow">
+    <p class="eyebrow eyebrow--invert eyebrow--gold">The standing invitation</p>
+    <p class="band__quote">&ldquo;Most people we meet were introduced by someone already sitting in our office.&rdquo;</p>
+    <span class="band__cite">C. Troy Sibley &middot; President &amp; Founder</span>
   </div>
 </section>
 
