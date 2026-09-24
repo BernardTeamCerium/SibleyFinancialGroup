@@ -235,10 +235,15 @@ the privacy statement on `disclosures.html`.
 Sent to a client after onboarding. Marked `noindex` — it is a private page, not
 search content. Two things still to add, both marked on the page:
 
-- **The welcome video.** Record 60–120 seconds to camera. The page source carries
-  a setup comment with ready-made markup for a YouTube embed or a self-hosted MP4.
+- **The welcome video.** The poster frame (Troy beside the crest) is in place;
+  the recording itself still needs shooting — 60–120 seconds to camera is plenty.
+  The page source carries a setup comment with ready-made markup for a YouTube
+  embed or a self-hosted MP4.
   ⚠️ If you embed from YouTube or Vimeo, widen the `Content-Security-Policy` in
   `netlify.toml` to allow their frame and media sources, or the embed is blocked.
+  ⚠️ The poster has a play button in the artwork, which is why no overlay badge
+  is drawn over it. A real `<video>` or embed draws its own control on top — use
+  a poster without the button, or accept the duplicate.
 - **The gift box photograph.** Replace `assets/img/welcome-gift-box.jpg`, keeping
   the filename so nothing else needs changing. Landscape, around 1200×800.
 
@@ -290,6 +295,18 @@ If you send the gift page to a large client list, watch that ceiling.
 The JavaScript still validates everything client-side before the POST. If the
 `action` is ever reverted to a placeholder containing `REPLACE_WITH`, the script
 falls back to opening the visitor's email client so no enquiry is lost.
+
+---
+
+## Checking your work
+
+```bash
+python3 tools/check-css.py
+```
+
+Fails if any page uses a class the stylesheet does not define. Worth running
+after editing `styles.css`: a deleted rule block produces no console error and
+no broken layout warning, so an unstyled section can ship unnoticed.
 
 ---
 

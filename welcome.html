@@ -88,6 +88,11 @@
     </div>
 
     <!-- SETUP — the welcome video.
+         NOTE: the poster image already has a play button in it, which is why
+         there is no .video-frame__play badge over it. If you swap in a <video>
+         or an embed, that player draws its own control on top — use a poster
+         frame without the button, or accept the duplicate.
+
          Record a short (60-120 second) piece to camera, then replace the
          <div class="video-frame"> block below with ONE of these:
 
@@ -113,12 +118,14 @@
          in netlify.toml to allow their frame and media sources, or the embed
          will be blocked. -->
     <div class="video-frame reveal">
-      <img src="assets/img/welcome-video-poster.jpg" alt="" width="1280" height="720">
-      <span class="video-frame__play" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M8 5.2v13.6L19 12Z"/></svg>
-      </span>
+      <picture>
+        <source srcset="assets/img/welcome-video-poster.webp" type="image/webp">
+        <img src="assets/img/welcome-video-poster.jpg"
+             alt="C. Troy Sibley, President and Founder of Sibley Financial Group, speaking to camera beside the firm&rsquo;s crest."
+             width="1600" height="900" loading="lazy" decoding="async">
+      </picture>
     </div>
-    <p class="video-caption"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.3 2"/></svg> <span class="placeholder">[VIDEO NOT YET ADDED]</span> Record the welcome message and follow the setup note in this page&rsquo;s source to drop it in.</p>
+    <p class="video-caption"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.3 2"/></svg> <span class="placeholder">[RECORDING PENDING]</span> The poster frame is in place; drop the recording in behind it using the setup note in this page&rsquo;s source.</p>
   </div>
 </section>
 

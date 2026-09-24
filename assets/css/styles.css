@@ -1143,6 +1143,76 @@ p + p { margin-top: 1.05em; }
   .gallery figure { aspect-ratio: 4 / 3; }
 }
 
+/* ------------------------------------------------------------ welcome ---- */
+/* Video frame. Holds a poster until the real recording is available; see the
+   markup comment in welcome.html for the YouTube / Vimeo / MP4 swap. */
+.video-frame {
+  position: relative; aspect-ratio: 16 / 9; overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--silver-200);
+  box-shadow: var(--shadow-lg);
+  background: linear-gradient(165deg, var(--navy-700), var(--navy-900));
+  display: grid; place-items: center;
+}
+.video-frame > picture, .video-frame > img, .video-frame > video, .video-frame > iframe {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; border: 0;
+}
+.video-frame > picture > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.video-frame__play {
+  position: relative; z-index: 2;
+  width: clamp(64px, 9vw, 86px); aspect-ratio: 1; border-radius: 50%;
+  display: grid; place-items: center;
+  color: #fff; background: rgba(184, 16, 32, .92);
+  border: 2px solid rgba(255, 255, 255, .35);
+  box-shadow: 0 10px 34px -8px rgba(0, 0, 0, .6);
+}
+.video-frame__play svg { margin-left: 4px; }
+.video-caption {
+  margin-top: 1rem; font-size: .875rem; color: var(--ink-mute);
+  display: flex; flex-wrap: wrap; align-items: center; gap: .6rem;
+}
+
+/* Media frame for the welcome gift photograph */
+.media-frame {
+  border-radius: var(--radius-lg); overflow: hidden;
+  border: 1px solid var(--silver-200); box-shadow: var(--shadow);
+  background: linear-gradient(165deg, var(--navy-700), var(--navy-900));
+}
+.media-frame img { width: 100%; display: block; }
+.media-frame__empty {
+  aspect-ratio: 3 / 2; display: grid; place-items: center;
+  text-align: center; padding: 2rem 1.5rem; gap: 1.25rem;
+}
+.media-frame__empty img { width: min(11rem, 45%); }
+
+/* Numbered timeline for the first ninety days */
+.timeline { list-style: none; padding: 0; display: grid; gap: 0; }
+.timeline li {
+  position: relative; padding: 0 0 2.25rem 3.25rem;
+  border-left: 1px solid var(--silver-200); margin-left: .9rem;
+}
+.timeline li:last-child { padding-bottom: 0; border-left-color: transparent; }
+.timeline li::before {
+  content: ""; position: absolute; left: -7px; top: .35rem;
+  width: 13px; height: 13px; background: var(--crimson-600);
+  transform: rotate(45deg); box-shadow: 0 0 0 5px var(--ivory);
+}
+.section--paper .timeline li::before { box-shadow: 0 0 0 5px var(--paper); }
+.timeline h3 { font-size: 1.2rem; margin-bottom: .2rem; }
+.timeline .when {
+  display: block; margin-bottom: .55rem;
+  font-size: .6875rem; font-weight: 600; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--crimson-600);
+}
+.timeline p { font-size: .9688rem; }
+
+/* Itemised contents of the welcome box */
+.box-contents { list-style: none; padding: 0; display: grid; gap: 1.1rem; }
+.box-contents li { display: flex; gap: .9rem; align-items: flex-start; font-size: 1rem; }
+.box-contents svg { flex: none; margin-top: .3rem; color: var(--crimson-600); }
+.box-contents strong { color: var(--navy-800); }
+
 /* ------------------------------------------------------------- utilities - */
 .text-center { text-align: center; }
 .muted { color: var(--ink-mute); }
