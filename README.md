@@ -25,6 +25,7 @@ public sources. **Replace these first.**
 | Welcome video | `welcome.html` | Poster panel stands in — see Campaign pages |
 | Gift box photograph | `assets/img/welcome-gift-box.jpg` | Branded panel stands in |
 | Event details | `event.html` | Red dashed placeholders throughout |
+| Event photographs | `event.html` | Four empty `.photo-slot` frames |
 
 Fastest way to do the first four:
 
@@ -141,13 +142,32 @@ served as WebP with a PNG fallback via `<picture>`.
 
 ## Campaign pages
 
-Three pages are linked from the footer rather than the primary nav, since they
-are sent directly to clients by email or text rather than browsed to. All three
+Three pages are linked from the footer (under **Firm**) rather than the primary
+nav, since they are sent directly to clients by email or text rather than
+browsed to. All three
 are marked `noindex, follow` and kept out of `sitemap.xml`: seats and stock are
 limited and the offers are for existing clients, so they should not turn up in
 search results. The links still work for anyone you send them to.
 
 ### `event.html` — client appreciation event
+
+**On the LSU logo.** This page deliberately carries no LSU logo, wordmark or
+other university mark. They are registered trademarks of Louisiana State
+University, and using them on a financial firm's promotional material implies
+sponsorship or endorsement — the very thing the non-affiliation disclosure on
+this page disclaims. Doing it anyway is a real legal exposure.
+
+What the page does instead: purple-and-gold game-day accents (colours are not
+trademarkable), a bolder hero, and slots for the firm's own photographs. If
+Sibley Financial Group is ever granted a trademark licence or becomes an
+official corporate sponsor, LSU issues approved marks and brand guidelines —
+there is a marked `.mark-slot` on the page ready for one, and the
+`--gameday-purple` / `--gameday-gold` tokens are already in `styles.css`.
+
+**Photographs.** The gallery ships four empty `.photo-slot` frames rather than
+placeholder image files. Replace each `<div class="photo-slot">` with an `<img>`
+at the aspect ratio labelled on it — the first is 3:2 at desktop, the rest 3:4.
+Real photographs of real clients will do more for this page than any copy.
 
 **Every event detail is a placeholder.** They render as conspicuous red dashed
 markers so the page cannot go out with the wrong date on it:
@@ -163,11 +183,20 @@ pre-game meeting spot and time, parking allowance per family, RSVP deadline.
 
 ### `gifts.html` — choose and claim
 
-Six gifts, choose up to two. The selection controls are real checkboxes inside
+Twelve gifts, choose up to two. The selection controls are real checkboxes inside
 labels, so they work without JavaScript and by keyboard; the script only adds the
 running count and enforces the limit. To change the catalogue, edit the
 `.gift-grid` block — each item is one `<label class="gift">`. The limit lives in
 `data-gift-limit="2"` on the form.
+
+Apparel items carry their own size `<select>`. One item (the game tickets) is
+marked up as `.gift--feature` with a gold "Limited" ribbon; add or remove that
+class to feature a different item.
+
+⚠️ **The game tickets are the item to check first with compliance.** They are
+materially higher in value than a mug or a cap, which matters under gift-value
+limits and Louisiana's anti-rebating rules. If the value is a problem, deleting
+that one `<label class="gift--feature">` block removes it cleanly.
 
 Submissions include **home addresses**. Set a retention habit: export what you
 need to fulfil, then delete the submissions from the Netlify dashboard. Say so in

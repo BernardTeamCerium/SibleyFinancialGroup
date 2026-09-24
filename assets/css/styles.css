@@ -46,6 +46,11 @@
   --font-display: 'Cormorant Garamond', 'Hoefler Text', 'Times New Roman', Georgia, serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 
+  /* Game day accents, used only on the event page. Colours are not
+     trademarkable; no LSU marks, wordmarks or logos appear anywhere. */
+  --gameday-purple: #461D7C;
+  --gameday-gold: #FDD023;
+
   --shell: 1200px;
   --shell-narrow: 860px;
   --gutter: clamp(1.25rem, 5vw, 3rem);
@@ -835,6 +840,25 @@ p + p { margin-top: 1.05em; }
 .gift input:checked + .gift__inner .gift__tick {
   background: var(--crimson-600); border-color: var(--crimson-600); color: #fff;
 }
+.gift--feature .gift__inner {
+  border-color: var(--gameday-gold);
+  background: linear-gradient(180deg, rgba(253, 208, 35, .10), transparent 45%);
+}
+.gift--feature input:checked + .gift__inner {
+  border-color: var(--crimson-600);
+  background: linear-gradient(180deg, rgba(253, 208, 35, .12), #FFFCFC 45%);
+}
+.gift__flag {
+  position: absolute; top: 1rem; left: 0;
+  padding: .3rem .85rem .3rem .95rem;
+  font-size: .625rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: #1B1040; background: var(--gameday-gold);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 9px) 50%, 100% 100%, 0 100%);
+  padding-right: 1.3rem;
+}
+.gift--feature .gift__name { padding-top: .5rem; }
+
 .gift__name {
   font-family: var(--font-display); font-size: 1.25rem; font-weight: 600;
   color: var(--navy-800); margin-bottom: .45rem; padding-right: 2rem;
@@ -933,6 +957,85 @@ p + p { margin-top: 1.05em; }
 .box-contents li { display: flex; gap: .9rem; align-items: flex-start; font-size: 1rem; }
 .box-contents svg { flex: none; margin-top: .3rem; color: var(--crimson-600); }
 .box-contents strong { color: var(--navy-800); }
+
+/* --------------------------------------------------------- game day ------ */
+/* Purple-and-gold treatment for the event page. Kept to accents so the
+   firm's own navy/crimson identity still leads. */
+.tincture-rule--gameday {
+  background: linear-gradient(90deg,
+    var(--gameday-purple) 0 50%, var(--gameday-gold) 50% 100%);
+}
+.gameday-hero {
+  background:
+    radial-gradient(120% 95% at 50% -25%, rgba(120, 70, 180, .42), transparent 62%),
+    radial-gradient(85% 70% at 88% 12%, rgba(253, 208, 35, .16), transparent 60%),
+    linear-gradient(180deg, #1B1040 0%, var(--navy-900) 82%);
+}
+.gameday-hero .eyebrow--invert::before { background: var(--gameday-gold); }
+.gameday-hero h1 .accent { color: var(--gameday-gold); }
+
+.pennant {
+  display: inline-flex; align-items: center; gap: .55rem;
+  padding: .45rem 1rem .45rem .8rem;
+  margin-bottom: 1.35rem;
+  font-size: .75rem; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: #1B1040; background: var(--gameday-gold);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 50%, 100% 100%, 0 100%);
+  padding-right: 1.6rem;
+}
+.eyebrow--gold { color: var(--gameday-gold); }
+.eyebrow--gold::before { background: var(--gameday-gold); }
+
+/* Photo slots. Replace each <div class="photo-slot"> with an <img> of the
+   same aspect ratio; no placeholder image files are shipped. */
+.photo-strip {
+  display: grid; gap: clamp(.75rem, 1.5vw, 1.15rem);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 40rem) { .photo-strip { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 64rem) { .photo-strip { grid-template-columns: repeat(4, 1fr); } }
+.photo-strip > * { border-radius: var(--radius); overflow: hidden; }
+.photo-strip img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3 / 4; }
+/* Lead image spans a 2x2 block so the four portraits fill the remaining
+   columns exactly; a plain column span strands the last one on its own row.
+   At two columns it goes full width instead, leaving a clean 2x2 below. */
+@media (min-width: 40rem) and (max-width: 63.99rem) {
+  .photo-strip > :first-child { grid-column: span 2; }
+  .photo-strip > :first-child .photo-slot,
+  .photo-strip > :first-child img { aspect-ratio: 3 / 2; }
+}
+@media (min-width: 64rem) {
+  .photo-strip > :first-child { grid-column: span 2; grid-row: span 2; }
+  .photo-strip > :first-child .photo-slot,
+  .photo-strip > :first-child img { aspect-ratio: auto; height: 100%; }
+}
+.photo-slot {
+  position: relative; aspect-ratio: 3 / 4;
+  display: grid; place-items: center; gap: .9rem;
+  padding: 1.5rem 1.25rem; text-align: center;
+  background:
+    repeating-linear-gradient(135deg, rgba(255,255,255,.028) 0 1px, transparent 1px 12px),
+    linear-gradient(165deg, var(--navy-700), var(--navy-900));
+  border: 1px solid rgba(189, 196, 208, .22);
+}
+.photo-slot__crest { width: min(6rem, 45%); opacity: .5; }
+.photo-slot__label {
+  font-size: .75rem; line-height: 1.6; color: var(--silver-500);
+  max-width: 22ch;
+}
+.photo-slot__label strong { display: block; color: var(--silver-200); margin-bottom: .3rem; }
+
+/* Slot for an officially licensed partner mark, if one is ever granted */
+.mark-slot {
+  display: inline-grid; place-items: center; gap: .5rem;
+  padding: 1.1rem 1.6rem; text-align: center;
+  border: 1px dashed rgba(253, 208, 35, .5);
+  border-radius: var(--radius);
+  background: rgba(253, 208, 35, .06);
+  font-size: .75rem; line-height: 1.6; color: var(--silver-300);
+  max-width: 24rem;
+}
 
 /* ------------------------------------------------------------- utilities - */
 .text-center { text-align: center; }
