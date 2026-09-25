@@ -1218,6 +1218,44 @@ p + p { margin-top: 1.05em; }
 .box-contents svg { flex: none; margin-top: .3rem; color: var(--crimson-600); }
 .box-contents strong { color: var(--navy-800); }
 
+/* ------------------------------------------------------------ referral --- */
+/* Grouped block for the referred person's details, set apart from the
+   referrer's own so it is obvious whose information is whose. */
+.fieldset-block {
+  margin-top: 1.5rem; padding: 1.35rem 1.4rem 1.5rem;
+  background: var(--silver-050);
+  border: 1px solid var(--silver-200);
+  border-left: 3px solid var(--royal-500);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.fieldset-block > legend, .fieldset-block > .legend {
+  padding: 0; margin-bottom: .3rem;
+  font-family: var(--font-display); font-size: 1.15rem; font-weight: 600;
+  color: var(--navy-800);
+}
+.fieldset-block > .legend + p { margin-bottom: 1.1rem; font-size: .875rem; color: var(--ink-mute); }
+.fieldset-block[hidden] { display: none; }
+
+/* The two ways to make an introduction */
+.path-grid { display: grid; gap: clamp(1rem, 2vw, 1.5rem); grid-template-columns: 1fr; }
+@media (min-width: 46rem) { .path-grid { grid-template-columns: repeat(2, 1fr); } }
+.path {
+  padding: clamp(1.5rem, 3vw, 2rem);
+  background: var(--paper);
+  border: 1px solid var(--silver-200);
+  border-top: 3px solid var(--navy-600);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+.path:last-child { border-top-color: var(--crimson-600); }
+.path h3 { margin-bottom: .55rem; }
+.path p { font-size: .9688rem; }
+.path__tag {
+  display: inline-block; margin-bottom: .9rem;
+  font-size: .6875rem; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--steel-600);
+}
+
 /* ------------------------------------------------------------- utilities - */
 .text-center { text-align: center; }
 .muted { color: var(--ink-mute); }

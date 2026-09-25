@@ -103,6 +103,29 @@
     });
   });
 
+  /* --------------------------------------- conditional field groups ----- */
+  /* A select can reveal or hide a related block. Enhancement only: with no
+     JavaScript the block stays visible and every field still submits. */
+  document.querySelectorAll('select[data-toggles]').forEach(function (select) {
+    var target = document.getElementById(select.getAttribute('data-toggles'));
+    if (!target) return;
+    var sync = function () {
+      // Their details are only needed when we are the ones making contact.
+      var needed = select.value !== 'introduce';
+      target.hidden = !needed;
+      if (!needed) {
+        target.querySelectorAll('input').forEach(function (i) {
+          i.value = '';
+          i.setAttribute('aria-invalid', 'false');
+          var err = document.getElementById(i.id + '-error');
+          if (err) err.textContent = '';
+        });
+      }
+    };
+    select.addEventListener('change', sync);
+    sync();
+  });
+
   /* ------------------------------------------------ shop category filter - */
   /* Filtering is an enhancement only: with no JavaScript every product shows. */
   (function () {

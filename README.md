@@ -142,12 +142,32 @@ served as WebP with a PNG fallback via `<picture>`.
 
 ## Campaign pages
 
-Three pages are linked from the footer (under **Firm**) rather than the primary
+Four pages are linked from the footer (under **Firm**) rather than the primary
 nav, since they are sent directly to clients by email or text rather than
 browsed to. All three
 are marked `noindex, follow` and kept out of `sitemap.xml`: seats and stock are
 limited and the offers are for existing clients, so they should not turn up in
 search results. The links still work for anyone you send them to.
+
+### `referral.html` — introduce someone
+
+Unlike the other three this one **is** indexed and in the sitemap: there is no
+scarcity to manage and "refer a friend to a financial advisor" is worth ranking
+for.
+
+Its design is deliberately consent-first. The visitor picks how the
+introduction happens, and the block asking for the other person's name, email
+and phone is **hidden unless they choose "please reach out to them"** — and any
+values already typed are cleared when they switch back, so a third party's
+details are never submitted by accident. With JavaScript off the block simply
+stays visible and every field still submits. A required checkbox confirms the
+person has agreed to be contacted.
+
+⚠️ **The page states plainly that the firm does not pay for referrals.** That is
+a compliance position as much as a copy choice: paying for introductions to
+insurance business runs into Louisiana's anti-rebating rules. If the firm ever
+wants a thank-you gift tied to referrals, put it to compliance before changing
+that wording.
 
 ### `event.html` — client appreciation event
 
@@ -282,13 +302,14 @@ The markup Netlify depends on, in `contact.html`:
 Do not remove the hidden `form-name` field — it is how Netlify attributes the
 submission.
 
-The site has **three** Netlify forms, each with its own confirmation page:
+The site has **four** Netlify forms, each with its own confirmation page:
 
 | Form name | Page | Redirects to |
 |---|---|---|
 | `contact` | `contact.html` | `/thank-you` |
 | `event-rsvp` | `event.html` | `/thank-you-rsvp` |
 | `gift-claim` | `gifts.html` | `/thank-you-gift` |
+| `referral` | `referral.html` | `/thank-you-referral` |
 
 **After the first deploy**, turn on notifications **for each form** so submissions
 actually reach a person: Netlify dashboard → **Forms** → pick the form → **Form
