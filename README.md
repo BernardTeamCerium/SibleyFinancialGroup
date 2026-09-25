@@ -209,17 +209,26 @@ To change the catalogue, edit the `.shop-grid` block — each item is one
 `data-gift-limit="2"` on the form; the filter chips are `.shop-filter` buttons
 whose `data-filter` must match a category exactly.
 
-**Product photography.** Each card shows the crest on a tinted ground as a
-stand-in. To use real product shots, replace the
-`<img class="product__crest" …>` inside `.product__media` with a 4:3 photograph:
+**Product photography.** Eleven of the twelve cards carry a photograph from
+`assets/img/products/`, mapped by the `PRODUCT_IMG` table to each product's slug.
+The game tickets keep the crest tile, since they are an experience rather than an
+object.
 
-```html
-<img src="assets/img/products/quarter-zip.jpg" alt="Navy quarter-zip with the Sibley crest"
-     width="800" height="600" loading="lazy">
+Four are dedicated shots (polo, portfolio, umbrella, chair). The other seven —
+quarter-zip, book bag, coffee mug, tumbler, water bottle, cap, cooler bag — were
+cut from the group lineup photograph and sit on a blurred fill of themselves so
+each product fills its 4:3 frame without dragging its neighbours into shot.
+
+⚠️ **Those seven are worth replacing with dedicated shots when you have them.**
+They are sharp enough at the size they display, but a native product photograph
+on a clean ground will look better. To swap one, drop a 4:3 image in at the same
+path and filename — no markup change needed:
+
+```
+assets/img/products/quarter-zip.jpg   (and .webp)
 ```
 
-An `assets/img/products/` folder is already in place. Shoot or crop everything to
-the same ratio and the grid stays even.
+Shoot or crop everything to 4:3 and the grid stays even.
 
 Apparel items carry their own size `<select>`. One item (the game tickets) is
 marked up as `.gift--feature` with a gold "Limited" ribbon; add or remove that

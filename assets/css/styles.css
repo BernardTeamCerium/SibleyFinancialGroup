@@ -864,7 +864,8 @@ p + p { margin-top: 1.05em; }
 .product[data-category="Bags &amp; Gear"],
 .product[data-category="Bags & Gear"]  { --tile-a: #8E1420; --tile-b: #3A0A12; }
 .product[data-category="Experiences"]  { --tile-a: #5B2A96; --tile-b: #1B1040; }
-.product__media img { width: 100%; height: 100%; object-fit: cover; }
+.product__media picture { display: block; width: 100%; height: 100%; }
+.product__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .product__media .product__crest {
   position: relative; z-index: 1;
   width: 46%; max-width: 7.5rem; height: auto;
@@ -976,6 +977,9 @@ p + p { margin-top: 1.05em; }
     linear-gradient(180deg, rgba(7, 18, 46, .55) 0%, transparent 28%, rgba(7, 18, 46, .5) 100%);
 }
 .hero--photo .hero__watermark { display: none; }
+/* The gift lineup spreads its products across the frame, so it is held
+   slightly right of centre to keep them clear of the headline. */
+.hero--lineup .hero__photo { object-position: 62% 52%; }
 @media (max-width: 47.99rem) {
   /* On a narrow screen the text sits over the whole frame, so darken it evenly. */
   .hero--photo::after {
