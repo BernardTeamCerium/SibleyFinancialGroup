@@ -21,7 +21,7 @@ public sources. **Replace these first.**
 | Street address | `contact.html`, footer, `index.html` JSON-LD | City/state only — no street address |
 | Domain name | `<link rel="canonical">`, Open Graph tags, `sitemap.xml`, `robots.txt` | `https://www.sibleyfinancialgroup.com` |
 | Office hours | Footer, `contact.html` | Mon–Fri, 9:00am–5:00pm CT |
-| Headshot of Troy Sibley | `about.html`, `index.html`, `event.html` | Crest plate stands in — see below |
+| Headshot of Troy Sibley | `about.html`, `index.html` | Crest plate stands in — `event.html` now uses a photo |
 | Welcome video | `welcome.html` | Poster panel stands in — see Campaign pages |
 | Gift box photograph | `assets/img/welcome-gift-box.jpg` | Branded panel stands in |
 | Event details | `event.html` | Red dashed placeholders throughout |
@@ -58,15 +58,20 @@ match actual licensing, registrations, product lines and state requirements befo
 
 ## Adding a headshot
 
-`about.html` and `index.html` both use a `.portrait` block that currently shows the crest
-on a navy plate. To swap in a real photograph, replace the inner `<div class="portrait__plate">…</div>`
-with:
+`event.html` carries a photograph of Troy at `assets/img/troy-sibley.jpg`, cropped from
+the welcome-video poster. `about.html` and `index.html` still use a `.portrait` block
+showing the crest on a navy plate; they can use the same file, or a dedicated headshot.
+To swap one in, replace the inner `<div class="portrait__plate">…</div>` with:
 
 ```html
 <img src="assets/img/troy-sibley.jpg" alt="C. Troy Sibley, President and Founder of Sibley Financial Group" width="800" height="1000">
 ```
 
 A portrait-orientation image around 800×1000px works best (the CSS crops to a 4:5 ratio).
+
+Note on the existing crop: the video poster has a play button in the artwork sitting close
+to Troy's shoulder, which caps how wide a badge-free portrait can be cut from it. The
+result is good but slightly upscaled — a native portrait photograph would be sharper.
 
 ---
 

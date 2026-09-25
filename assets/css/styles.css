@@ -507,7 +507,8 @@ p + p { margin-top: 1.05em; }
   border: 1px solid var(--silver-200); box-shadow: var(--shadow);
   background: linear-gradient(165deg, var(--navy-700), var(--navy-900));
 }
-.portrait img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.portrait picture { display: block; width: 100%; }
+.portrait img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; }
 .portrait__plate {
   display: grid; place-items: center; text-align: center;
   aspect-ratio: 4 / 5; padding: 2.5rem 1.5rem;
