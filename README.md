@@ -22,8 +22,7 @@ public sources. **Replace these first.**
 | Domain name | `<link rel="canonical">`, Open Graph tags, `sitemap.xml`, `robots.txt` | `https://www.sibleyfinancialgroup.com` |
 | Office hours | Footer, `contact.html` | Mon–Fri, 9:00am–5:00pm CT |
 | Headshot of Troy Sibley | `about.html`, `index.html` | Crest plate stands in — `event.html` now uses a photo |
-| Welcome video | `welcome.html` | Poster panel stands in — see Campaign pages |
-| Gift box photograph | `assets/img/welcome-gift-box.jpg` | Branded panel stands in |
+| Welcome video | `welcome.html` | Poster frame in place; recording still to shoot |
 | Event details | `event.html` | Red dashed placeholders throughout |
 | Event photographs | `event.html` | Four empty `.photo-slot` frames |
 
@@ -240,8 +239,9 @@ the privacy statement on `disclosures.html`.
 Sent to a client after onboarding. Marked `noindex` — it is a private page, not
 search content. Two things still to add, both marked on the page:
 
-- **The welcome video.** The poster frame (Troy beside the crest) is in place;
-  the recording itself still needs shooting — 60–120 seconds to camera is plenty.
+- **The welcome video.** The poster frame (Troy beside the crest) is in place and
+  the page no longer flags it as pending, so it reads as finished; the recording
+  itself still needs shooting — 60–120 seconds to camera is plenty.
   The page source carries a setup comment with ready-made markup for a YouTube
   embed or a self-hosted MP4.
   ⚠️ If you embed from YouTube or Vimeo, widen the `Content-Security-Policy` in
@@ -249,10 +249,7 @@ search content. Two things still to add, both marked on the page:
   ⚠️ The poster has a play button in the artwork, which is why no overlay badge
   is drawn over it. A real `<video>` or embed draws its own control on top — use
   a poster without the button, or accept the duplicate.
-- **The gift box photograph.** Replace `assets/img/welcome-gift-box.jpg`, keeping
-  the filename so nothing else needs changing. Landscape, around 1200×800.
-
-A branded navy panel stands in for both so the page looks finished in preview.
+The gift box photograph is in place at `assets/img/welcome-gift-box.jpg`.
 
 ⚠️ **Compliance, before any of these circulate.** Client gifts and event
 hospitality from an insurance-licensed practice are regulated — gift value limits
