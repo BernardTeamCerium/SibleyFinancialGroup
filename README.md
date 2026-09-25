@@ -56,9 +56,17 @@ match actual licensing, registrations, product lines and state requirements befo
 
 ## Troy's headshot
 
-`assets/img/troy-sibley.jpg` (900×1125, 4:5) is used by the `.portrait` block on
+`assets/img/troy-sibley-headshot.jpg` (900×1125, 4:5) is used by the `.portrait` block on
 `index.html`, `about.html` and `event.html`. To change it, replace that file —
 keep the 4:5 ratio and no markup needs touching.
+
+⚠️ **Replacing any image in place reuses its URL**, so anyone who has already
+loaded the page may keep seeing the old one out of their browser cache. Image
+responses now carry `must-revalidate` so this resolves on the next visit, but
+if you swap a photo for a visibly different one and want it to land
+immediately, give the new file a new name and update the references. Filenames
+here are not content-hashed, so the URL is the only thing telling a browser the
+picture changed.
 
 ---
 

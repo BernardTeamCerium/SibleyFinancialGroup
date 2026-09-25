@@ -34,12 +34,14 @@
     # inline style attributes. There is no user-generated content on this site.
     Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; form-action 'self'; frame-ancestors 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
 
-# Images are stable; a week of caching is safe and still lets a swapped logo
-# reach visitors reasonably quickly.
+# Revalidated like the CSS and JS below, and for the same reason: these
+# filenames are not content-hashed, so replacing a photograph in place reuses
+# its URL. A long cache here meant a swapped image kept showing the old one for
+# up to a week. ETags keep revalidation cheap.
 [[headers]]
   for = "/assets/img/*"
   [headers.values]
-    Cache-Control = "public, max-age=604800"
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 # Deliberately revalidated on every request: the filenames are not
 # content-hashed, so a long cache would hide edits to the site from
