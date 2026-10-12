@@ -12,6 +12,12 @@
  *                   The domain must be verified in Resend or sending will fail.
  *   REPLY_TO        optional — where replies go, defaults to FROM_EMAIL
  *   SITE_URL        optional — used for the crest image in the email
+ *   NOTIFY_EMAIL    optional — team address(es) told about each submission,
+ *                   comma-separated. Omit and no internal alert is sent.
+ *   CRM_WEBHOOK_URL optional — submissions are POSTed here as JSON. Works with
+ *                   Zapier/Make catch hooks and most CRM inbound endpoints.
+ *   CRM_AUTH_HEADER optional — sent as Authorization, e.g. "Bearer abc123"
+ *   CRM_AUTH_NAME   optional — use a different header name, e.g. "x-api-key"
  *
  * No npm dependencies: Resend is called over plain fetch, so the site still
  * needs no build step.
@@ -39,6 +45,7 @@ const MESSAGES = {
       eyebrow: 'Who you will be meeting',
       name: 'C. Troy Sibley',
       role: 'President & Founder',
+      strapline: 'Twenty-five years advising families and business owners across Louisiana.',
       bio: [
         'Troy founded Sibley Financial Group in 2000 and has spent twenty-five years helping families and business owners across Louisiana retire with confidence. His work concentrates on safe growth tied to the market, retirement and estate planning, and protecting wealth that took a lifetime to build.',
         'He was named the youngest district manager at Union National, a Kemper company, and has since been recognised as a Top Advisor and Regional Agent of the Year by Transamerica Life and Lincoln Heritage Life. In 2025 he was inducted into the Marquis Who\u2019s Who network of Emerging Leaders.',
@@ -92,19 +99,34 @@ function renderHtml({ heading, body, name, siteUrl, intro }) {
   /* Optional introduction to the advisor. Omitted unless the form's copy
      carries one, so existing clients are not introduced to someone they
      already know. */
+  /* Photograph beside his name rather than above it. A two-column table is
+     the only side-by-side layout email can be trusted with — there is no
+     flexbox, and floats drop out in Outlook. The photo is kept narrow and
+     only the name and role sit next to it, so the pairing still holds at
+     320px; the bio runs full width underneath where it has room to breathe. */
   const introBlock = !intro ? '' : `
       <tr><td style="padding:4px 28px 0;">
-        <div style="border-top:1px solid #e9ecf1;padding-top:26px;"></div>
+        <div style="border-top:1px solid #e9ecf1;padding-top:24px;"></div>
       </td></tr>
-      <tr><td style="padding:0 28px 6px;font-family:Arial,Helvetica,sans-serif;" align="center">
-        <div style="font-size:11px;font-weight:bold;letter-spacing:.2em;text-transform:uppercase;color:#1b4c86;margin-bottom:16px;">${escapeHtml(intro.eyebrow)}</div>
-        <img src="${escapeHtml(siteUrl)}/assets/img/troy-sibley-headshot.jpg" width="132" height="165"
-             alt="${escapeHtml(intro.name)}, ${escapeHtml(intro.role)}"
-             style="display:block;margin:0 auto 14px;border:1px solid #d5dae3;border-radius:4px;">
-        <div style="font-family:Georgia,'Times New Roman',serif;font-size:20px;color:#0a2044;font-weight:600;">${escapeHtml(intro.name)}</div>
-        <div style="font-size:10px;font-weight:bold;letter-spacing:.17em;text-transform:uppercase;color:#6c7884;margin-top:5px;">${escapeHtml(intro.role)}</div>
+      <tr><td style="padding:0 28px 4px;font-family:Arial,Helvetica,sans-serif;">
+        <div style="font-size:11px;font-weight:bold;letter-spacing:.2em;text-transform:uppercase;color:#1b4c86;margin-bottom:14px;">${escapeHtml(intro.eyebrow)}</div>
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+          <tr>
+            <td width="112" valign="top" style="width:112px;padding-right:16px;">
+              <img src="${escapeHtml(siteUrl)}/assets/img/troy-sibley-headshot.jpg" width="112" height="140"
+                   alt="${escapeHtml(intro.name)}, ${escapeHtml(intro.role)}"
+                   style="display:block;width:112px;height:140px;border:1px solid #d5dae3;border-radius:4px;">
+            </td>
+            <td valign="middle">
+              <div style="font-family:Georgia,'Times New Roman',serif;font-size:21px;line-height:1.2;color:#0a2044;font-weight:600;">${escapeHtml(intro.name)}</div>
+              <div style="font-size:10px;font-weight:bold;letter-spacing:.17em;text-transform:uppercase;color:#6c7884;margin-top:6px;">${escapeHtml(intro.role)}</div>
+              <div style="margin-top:12px;width:34px;height:2px;background:#b81020;font-size:0;line-height:0;">&nbsp;</div>
+              <div style="margin-top:12px;font-size:13px;line-height:1.55;color:#66707d;">${escapeHtml(intro.strapline)}</div>
+            </td>
+          </tr>
+        </table>
       </td></tr>
-      <tr><td style="padding:18px 28px 0;font-family:Arial,Helvetica,sans-serif;">
+      <tr><td style="padding:20px 28px 0;font-family:Arial,Helvetica,sans-serif;">
         ${intro.bio.map((t) => `<p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#414d5c;">${escapeHtml(t)}</p>`).join('')}
       </td></tr>
       <tr><td style="padding:6px 28px 0;font-family:Arial,Helvetica,sans-serif;">
@@ -160,7 +182,7 @@ function renderText({ heading, body, name, intro }) {
   const greeting = name ? `Hello ${name.split(' ')[0]},` : 'Hello,';
   const introLines = !intro ? [] : [
     '', intro.eyebrow.toUpperCase(), '',
-    `${intro.name} - ${intro.role}`, '',
+    `${intro.name} - ${intro.role}`, intro.strapline, '',
     ...intro.bio.flatMap((t) => [t, '']),
     `${intro.beliefsTitle.toUpperCase()}:`, '',
     ...intro.beliefs.map((t) => `  * ${t}`),
@@ -183,7 +205,7 @@ function renderText({ heading, body, name, intro }) {
 }
 
 /* ------------------------------------------------------------- sending - */
-async function sendViaResend({ to, subject, html, text }) {
+async function sendViaResend({ to, subject, html, text, replyTo }) {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
@@ -192,8 +214,8 @@ async function sendViaResend({ to, subject, html, text }) {
     },
     body: JSON.stringify({
       from: process.env.FROM_EMAIL,
-      to: [to],
-      reply_to: process.env.REPLY_TO || undefined,
+      to: Array.isArray(to) ? to : [to],
+      reply_to: replyTo || process.env.REPLY_TO || undefined,
       subject,
       html,
       text,
@@ -202,6 +224,77 @@ async function sendViaResend({ to, subject, html, text }) {
   const detail = await res.text();
   if (!res.ok) throw new Error(`Resend responded ${res.status}: ${detail}`);
   return detail;
+}
+
+/* ------------------------------------------------- internal notification - */
+const FORM_LABELS = {
+  contact: 'contact enquiry',
+  referral: 'referral',
+  'event-rsvp': 'event registration',
+  'gift-claim': 'gift claim',
+};
+
+/* Fields that are plumbing rather than content, and must not be shown. */
+const SKIP_FIELDS = new Set(['form-name', 'company_website', 'consent']);
+
+function renderNotification({ formName, data, submittedAt }) {
+  const label = FORM_LABELS[formName] || formName || 'form';
+  const rows = Object.entries(data)
+    .filter(([k, v]) => !SKIP_FIELDS.has(k) && String(v || '').trim() !== '')
+    .map(([k, v]) => {
+      const key = escapeHtml(k.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()));
+      return `<tr>
+        <td style="padding:9px 14px;border-bottom:1px solid #e9ecf1;font-size:12px;font-weight:bold;letter-spacing:.06em;text-transform:uppercase;color:#6c7884;white-space:nowrap;vertical-align:top;">${key}</td>
+        <td style="padding:9px 14px;border-bottom:1px solid #e9ecf1;font-size:14px;color:#131b26;">${escapeHtml(v).replace(/\n/g, '<br>')}</td>
+      </tr>`;
+    }).join('');
+
+  const html = `<!doctype html><html><head><meta charset="utf-8"></head>
+<body style="margin:0;padding:24px 12px;background:#f8f6f1;font-family:Arial,Helvetica,sans-serif;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:580px;background:#ffffff;border:1px solid #d5dae3;border-radius:6px;overflow:hidden;">
+  <tr><td style="background:#0a2044;padding:16px 20px;color:#ffffff;font-size:13px;font-weight:bold;letter-spacing:.14em;text-transform:uppercase;">New ${escapeHtml(label)}</td></tr>
+  <tr><td style="height:3px;line-height:3px;font-size:0;background:#b81020;">&nbsp;</td></tr>
+  <tr><td style="padding:18px 20px 6px;font-size:13px;color:#66707d;">Received ${escapeHtml(submittedAt)}</td></tr>
+  <tr><td style="padding:0 20px 20px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #e9ecf1;border-radius:4px;">${rows}</table></td></tr>
+  <tr><td style="padding:0 20px 22px;font-size:12px;color:#66707d;">Reply to this email to answer them directly. A confirmation has already gone to the person who submitted it.</td></tr>
+</table></td></tr></table></body></html>`;
+
+  const text = [
+    `NEW ${label.toUpperCase()}`, `Received ${submittedAt}`, '',
+    ...Object.entries(data)
+      .filter(([k, v]) => !SKIP_FIELDS.has(k) && String(v || '').trim() !== '')
+      .map(([k, v]) => `${k.replace(/_/g, ' ')}: ${v}`),
+    '', 'Reply to this email to answer them directly.',
+  ].join('\n');
+
+  return { subject: `New ${label}${data.name ? ` — ${data.name}` : ''}`, html, text };
+}
+
+/* -------------------------------------------------------------- the CRM - */
+/* A plain JSON POST, which every CRM inbound endpoint and every Zapier or
+   Make catch hook accepts. Both the tidied fields and the raw submission go
+   out, so whatever is on the other end can map what it needs. */
+async function postToCrm({ formName, data, submittedAt, payload }) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (process.env.CRM_AUTH_HEADER) {
+    headers[process.env.CRM_AUTH_NAME || 'Authorization'] = process.env.CRM_AUTH_HEADER;
+  }
+  const res = await fetch(process.env.CRM_WEBHOOK_URL, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      source: 'sibleyfinancialgroup.com',
+      form: formName,
+      submitted_at: submittedAt,
+      name: data.name || '',
+      email: data.email || payload.email || '',
+      phone: data.phone || '',
+      message: data.message || data.context || '',
+      fields: data,
+    }),
+  });
+  if (!res.ok) throw new Error(`CRM responded ${res.status}: ${(await res.text()).slice(0, 200)}`);
 }
 
 /* ------------------------------------------------------------- handler - */
@@ -235,21 +328,42 @@ exports.handler = async (event) => {
   const copy = MESSAGES[formName] || MESSAGES.contact;
   const siteUrl = (process.env.SITE_URL || process.env.URL || '').replace(/\/$/, '');
   const fields = { ...copy, name, siteUrl };
+  const submittedAt = new Date().toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
+  const ctx = { formName, data, submittedAt, payload };
 
-  try {
-    await sendViaResend({
-      to,
-      subject: copy.subject,
-      html: renderHtml(fields),
-      text: renderText(fields),
-    });
-    console.log(`submission-created: confirmation sent for "${formName}"`);
-    return ok('sent');
-  } catch (err) {
-    console.error(`submission-created: send failed for "${formName}" —`, err.message);
-    return ok('send failed');
+  const jobs = [];
+
+  // 1. confirmation to the person who filled the form in
+  jobs.push(['confirmation', sendViaResend({
+    to, subject: copy.subject, html: renderHtml(fields), text: renderText(fields),
+  })]);
+
+  // 2. alert to the team, with reply-to set to the enquirer so a reply just works
+  if (process.env.NOTIFY_EMAIL) {
+    const note = renderNotification(ctx);
+    jobs.push(['team notification', sendViaResend({
+      to: process.env.NOTIFY_EMAIL.split(',').map((x) => x.trim()).filter(Boolean),
+      subject: note.subject, html: note.html, text: note.text, replyTo: to,
+    })]);
   }
+
+  // 3. hand the submission to the CRM
+  if (process.env.CRM_WEBHOOK_URL) {
+    jobs.push(['CRM', postToCrm(ctx)]);
+  }
+
+  // Independent on purpose: a CRM outage must not cost the enquirer their
+  // confirmation, and a bounced confirmation must not lose the CRM record.
+  const results = await Promise.allSettled(jobs.map(([, p]) => p));
+  const done = [];
+  results.forEach((r, i) => {
+    const label = jobs[i][0];
+    if (r.status === 'fulfilled') { done.push(`${label} ok`); }
+    else { done.push(`${label} FAILED`); console.error(`submission-created: ${label} failed —`, r.reason && r.reason.message); }
+  });
+  console.log(`submission-created: "${formName}" — ${done.join(', ')}`);
+  return ok(done.join(', '));
 };
 
 // exported for the local test harness
-module.exports._internals = { MESSAGES, renderHtml, renderText };
+module.exports._internals = { MESSAGES, renderHtml, renderText, renderNotification };

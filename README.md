@@ -387,10 +387,57 @@ the `MESSAGES` table at the top of the function.
    | `FROM_EMAIL` | yes | `Sibley Financial Group <hello@sibleyfinancialgroup.com>` |
    | `REPLY_TO` | no | `info@sibleyfinancialgroup.com` |
    | `SITE_URL` | no | set automatically by Netlify; only override for a custom domain |
+   | `NOTIFY_EMAIL` | no | `troy@…, office@…` — team alert per submission, comma-separated |
+   | `CRM_WEBHOOK_URL` | no | `https://hooks.zapier.com/…` — submissions POSTed here as JSON |
+   | `CRM_AUTH_HEADER` | no | `Bearer abc123` — omit if the endpoint needs no auth |
+   | `CRM_AUTH_NAME` | no | `x-api-key` — only if the header is not `Authorization` |
 
 4. **Redeploy**, then submit a test through the live contact form and confirm the
    email arrives. Check the spam folder too — a brand-new sending domain often
    lands there until it has some reputation.
+
+### Team notifications
+
+Set `NOTIFY_EMAIL` and every submission also sends an internal alert listing the
+fields, with **reply-to set to the enquirer** so hitting reply answers them
+directly. Plumbing fields (`form-name`, the honeypot, the consent checkbox) are
+filtered out.
+
+Netlify has its own per-form notification in the dashboard and you can use that
+instead. This one is better formatted, covers all four forms at once, and lives
+with the rest of the email setup.
+
+### The CRM
+
+Set `CRM_WEBHOOK_URL` and each submission is POSTed there as JSON:
+
+```json
+{
+  "source": "sibleyfinancialgroup.com",
+  "form": "contact",
+  "submitted_at": "2026-10-12 14:05 UTC",
+  "name": "Jane Doe", "email": "jane@example.com", "phone": "555-0100",
+  "message": "…",
+  "fields": { "…every raw form field…" }
+}
+```
+
+Both shapes go out — tidied top-level fields and the raw submission — so
+whatever is on the other end can map what it needs. This works today with a
+Zapier or Make catch hook, and with most CRM inbound endpoints.
+
+**For a native integration** (creating a contact or lead directly, matching your
+pipeline stages and custom fields) the CRM needs naming. The webhook is the
+generic path; a direct API call can be swapped into `postToCrm` once we know
+what it is talking to.
+
+### Nothing can block anything else
+
+The confirmation, the team alert and the CRM post run independently. A CRM
+outage does not cost the enquirer their confirmation, and a bounced email does
+not lose the CRM record. The function returns 200 on every path, because Netlify
+has already stored the submission by the time it runs — so a failure here never
+costs you an enquiry.
 
 ### If an email does not arrive
 
