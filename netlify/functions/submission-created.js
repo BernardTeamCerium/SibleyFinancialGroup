@@ -30,9 +30,27 @@ const MESSAGES = {
     subject: `Thank you for contacting ${FIRM}`,
     heading: 'Thank you for getting in touch',
     body: [
-      'Someone from Sibley Financial Group will reach out to you shortly to discuss your inquiry and set a time to speak with one of our award-winning advisors.',
+      "Someone from Troy's team will be calling you shortly to schedule a meeting with Troy Sibley, our President and Founder.",
       'If your question is time-sensitive, please call us directly rather than waiting — we would rather hear from you than have you wonder.',
     ],
+    // Only the enquiry email introduces Troy: the other forms are filled in by
+    // people who already know him.
+    intro: {
+      eyebrow: 'Who you will be meeting',
+      name: 'C. Troy Sibley',
+      role: 'President & Founder',
+      bio: [
+        'Troy founded Sibley Financial Group in 2000 and has spent twenty-five years helping families and business owners across Louisiana retire with confidence. His work concentrates on safe growth tied to the market, retirement and estate planning, and protecting wealth that took a lifetime to build.',
+        'He was named the youngest district manager at Union National, a Kemper company, and has since been recognised as a Top Advisor and Regional Agent of the Year by Transamerica Life and Lincoln Heritage Life. In 2025 he was inducted into the Marquis Who\u2019s Who network of Emerging Leaders.',
+      ],
+      beliefsTitle: 'What he believes',
+      beliefs: [
+        'Substance over appearance. A plan that only looks good on a brochure does not leave the office.',
+        'Protection first, then growth. Income you depend on should not be exposed to a market you cannot control.',
+        'Plain English. If a strategy cannot be explained in one page, it is not the right strategy.',
+        'A written plan, not a verbal one. You leave with something you can hand to your spouse, your CPA or your attorney.',
+      ],
+    },
   },
   referral: {
     subject: `Thank you for the introduction — ${FIRM}`,
@@ -65,11 +83,36 @@ const escapeHtml = (s) =>
   String(s).replace(/[&<>"']/g, (c) =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-function renderHtml({ heading, body, name, siteUrl }) {
+function renderHtml({ heading, body, name, siteUrl, intro }) {
   const greeting = name ? `Hello ${escapeHtml(name.split(' ')[0])},` : 'Hello,';
   const paragraphs = body
     .map((p) => `<p style="margin:0 0 16px;font-size:16px;line-height:1.65;color:#414d5c;">${escapeHtml(p)}</p>`)
     .join('');
+
+  /* Optional introduction to the advisor. Omitted unless the form's copy
+     carries one, so existing clients are not introduced to someone they
+     already know. */
+  const introBlock = !intro ? '' : `
+      <tr><td style="padding:4px 28px 0;">
+        <div style="border-top:1px solid #e9ecf1;padding-top:26px;"></div>
+      </td></tr>
+      <tr><td style="padding:0 28px 6px;font-family:Arial,Helvetica,sans-serif;" align="center">
+        <div style="font-size:11px;font-weight:bold;letter-spacing:.2em;text-transform:uppercase;color:#1b4c86;margin-bottom:16px;">${escapeHtml(intro.eyebrow)}</div>
+        <img src="${escapeHtml(siteUrl)}/assets/img/troy-sibley-headshot.jpg" width="132" height="165"
+             alt="${escapeHtml(intro.name)}, ${escapeHtml(intro.role)}"
+             style="display:block;margin:0 auto 14px;border:1px solid #d5dae3;border-radius:4px;">
+        <div style="font-family:Georgia,'Times New Roman',serif;font-size:20px;color:#0a2044;font-weight:600;">${escapeHtml(intro.name)}</div>
+        <div style="font-size:10px;font-weight:bold;letter-spacing:.17em;text-transform:uppercase;color:#6c7884;margin-top:5px;">${escapeHtml(intro.role)}</div>
+      </td></tr>
+      <tr><td style="padding:18px 28px 0;font-family:Arial,Helvetica,sans-serif;">
+        ${intro.bio.map((t) => `<p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#414d5c;">${escapeHtml(t)}</p>`).join('')}
+      </td></tr>
+      <tr><td style="padding:6px 28px 0;font-family:Arial,Helvetica,sans-serif;">
+        <div style="background:#f4f6f9;border:1px solid #e9ecf1;border-left:3px solid #b81020;border-radius:0 3px 3px 0;padding:18px 20px;">
+          <div style="font-size:11px;font-weight:bold;letter-spacing:.17em;text-transform:uppercase;color:#0c2c52;margin-bottom:12px;">${escapeHtml(intro.beliefsTitle)}</div>
+          ${intro.beliefs.map((t) => `<p style="margin:0 0 10px;font-size:14px;line-height:1.6;color:#414d5c;"><span style="color:#b81020;">&#9670;</span>&nbsp; ${escapeHtml(t)}</p>`).join('')}
+        </div>
+      </td></tr>`;
 
   /* Table layout and inline styles: email clients ignore stylesheets, and
      many strip <style> blocks entirely. */
@@ -95,7 +138,8 @@ function renderHtml({ heading, body, name, siteUrl }) {
         <p style="margin:0 0 16px;font-size:16px;line-height:1.65;color:#414d5c;">${greeting}</p>
         ${paragraphs}
       </td></tr>
-      <tr><td style="padding:10px 28px 32px;" align="center">
+      ${introBlock}
+      <tr><td style="padding:22px 28px 32px;" align="center">
         <a href="tel:${PHONE_HREF}" style="display:inline-block;background:#b81020;color:#ffffff;text-decoration:none;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;letter-spacing:.04em;text-transform:uppercase;padding:14px 28px;border-radius:3px;">Call ${PHONE_DISPLAY}</a>
       </td></tr>
       <tr><td style="padding:0 28px 26px;">
@@ -112,10 +156,17 @@ function renderHtml({ heading, body, name, siteUrl }) {
 </body></html>`;
 }
 
-function renderText({ heading, body, name }) {
+function renderText({ heading, body, name, intro }) {
   const greeting = name ? `Hello ${name.split(' ')[0]},` : 'Hello,';
+  const introLines = !intro ? [] : [
+    '', intro.eyebrow.toUpperCase(), '',
+    `${intro.name} - ${intro.role}`, '',
+    ...intro.bio.flatMap((t) => [t, '']),
+    `${intro.beliefsTitle.toUpperCase()}:`, '',
+    ...intro.beliefs.map((t) => `  * ${t}`),
+  ];
   return [
-    heading.toUpperCase(), '', greeting, '', ...body, '',
+    heading.toUpperCase(), '', greeting, '', ...body, ...introLines, '',
     `Call us: ${PHONE_DISPLAY}`, '',
     'Esse Quam Videri - to be, rather than to seem.', '',
     '--',

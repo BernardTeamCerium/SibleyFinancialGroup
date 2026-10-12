@@ -364,6 +364,13 @@ Each form gets its own wording; `contact` is also the fallback for any form adde
 later. Two thank-you pages already promised "we will email a confirmation", so
 this makes good on that.
 
+**The contact email introduces Troy** — his photograph, a short bio and four
+beliefs — and tells the enquirer that someone from his team will call to
+schedule a meeting with him. The other three forms deliberately skip that
+block: they are filled in by people who already know him, and promising them a
+meeting would read oddly. Both the introduction and the per-form copy live in
+the `MESSAGES` table at the top of the function.
+
 ### Setting it up (about ten minutes, once)
 
 1. **Verify the sending domain in Resend.** Resend → *Domains* → add
@@ -392,11 +399,11 @@ per submission and never fails the submission itself: if Resend rejects the send
 the form entry is still captured, so an email problem never costs an enquiry. The
 most common log line is a 403 from Resend, which means the domain is not verified.
 
-⚠️ **"award-winning advisors"** appears in the contact email at the firm's
-request. Troy's awards are real, but award claims in advisor marketing normally
-need the criteria disclosure, which the email footer carries. Worth putting to
-compliance, along with whether the plural is right — Robert's awards are not
-documented.
+⚠️ The contact email names Troy's **Transamerica, Lincoln Heritage and Marquis
+recognitions** as part of his bio. The footer carries the criteria disclosure
+that award claims normally require, but the wording is still worth putting to
+compliance — as are the biographical facts themselves, which came from public
+sources rather than from Troy.
 
 ---
 
