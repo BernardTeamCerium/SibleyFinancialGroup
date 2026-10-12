@@ -290,6 +290,7 @@ async function postToCrm({ formName, data, submittedAt, payload }) {
       name: data.name || '',
       email: data.email || payload.email || '',
       phone: data.phone || '',
+      estimated_assets: data.estimated_assets || '',
       message: data.message || data.context || '',
       fields: data,
     }),

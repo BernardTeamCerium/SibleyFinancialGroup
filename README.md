@@ -396,6 +396,23 @@ the `MESSAGES` table at the top of the function.
    email arrives. Check the spam folder too — a brand-new sending domain often
    lands there until it has some reputation.
 
+### The estimated-assets field
+
+`contact.html` asks for estimated retirement and investment assets as a range,
+not a figure. It is **optional and defaults to "Prefer not to say"** — making a
+stranger disclose their net worth before they can ask a question costs more
+enquiries than the data is worth, and a free-text box invites "about half a
+million maybe", which is no use to a CRM.
+
+The bands live in `ASSET_BANDS` near the top of the contact page's section. It
+flows automatically into the team alert and reaches the CRM both as a
+top-level `estimated_assets` key and inside `fields`, since most CRMs have a
+slot for it on the lead record.
+
+It is on the enquiry form only. The gift and event forms do not need it, and
+asking a client to estimate someone else's assets on the referral form would
+be inappropriate.
+
 ### Team notifications
 
 Set `NOTIFY_EMAIL` and every submission also sends an internal alert listing the
