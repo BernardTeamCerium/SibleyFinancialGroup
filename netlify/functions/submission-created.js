@@ -45,9 +45,9 @@ const MESSAGES = {
       eyebrow: 'Who you will be meeting',
       name: 'C. Troy Sibley',
       role: 'President & Founder',
-      strapline: 'Twenty-five years advising families and business owners across Louisiana.',
+      strapline: 'Twenty-five years advising families and business owners nationwide.',
       bio: [
-        'Troy founded Sibley Financial Group in 2000 and has spent twenty-five years helping families and business owners across Louisiana retire with confidence. His work concentrates on safe growth tied to the market, retirement and estate planning, and protecting wealth that took a lifetime to build.',
+        'Troy founded Sibley Financial Group in 2000 and has spent twenty-five years helping families and business owners nationwide retire with confidence. His work concentrates on safe growth tied to the market, retirement and estate planning, and protecting wealth that took a lifetime to build.',
         'He was named the youngest district manager at Union National, a Kemper company, and has since been recognised as a Top Advisor and Regional Agent of the Year by Transamerica Life and Lincoln Heritage Life. In 2025 he was inducted into the Marquis Who\u2019s Who network of Emerging Leaders.',
       ],
       beliefsTitle: 'What he believes',
