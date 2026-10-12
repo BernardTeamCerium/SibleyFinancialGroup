@@ -353,6 +353,53 @@ no broken layout warning, so an unstyled section can ship unnoticed.
 
 ---
 
+## Confirmation emails
+
+When someone submits any form, `netlify/functions/submission-created.js` emails
+them a branded confirmation. Netlify fires the `submission-created` event at the
+function of that name, so **do not rename the file**. It calls Resend over plain
+`fetch` with no npm packages, so the site still has no build step.
+
+Each form gets its own wording; `contact` is also the fallback for any form added
+later. Two thank-you pages already promised "we will email a confirmation", so
+this makes good on that.
+
+### Setting it up (about ten minutes, once)
+
+1. **Verify the sending domain in Resend.** Resend → *Domains* → add
+   `sibleyfinancialgroup.com` and publish the DNS records it gives you.
+   ⚠️ **Do this first.** Sending from an unverified domain fails outright, and
+   sending from a free address like gmail.com gets filtered as spoofing.
+2. **Create an API key** at Resend → *API keys*.
+3. **Set the environment variables** in Netlify → *Site configuration* →
+   *Environment variables*:
+
+   | Variable | Required | Example |
+   |---|---|---|
+   | `RESEND_API_KEY` | yes | `re_xxxxxxxx` |
+   | `FROM_EMAIL` | yes | `Sibley Financial Group <hello@sibleyfinancialgroup.com>` |
+   | `REPLY_TO` | no | `info@sibleyfinancialgroup.com` |
+   | `SITE_URL` | no | set automatically by Netlify; only override for a custom domain |
+
+4. **Redeploy**, then submit a test through the live contact form and confirm the
+   email arrives. Check the spam folder too — a brand-new sending domain often
+   lands there until it has some reputation.
+
+### If an email does not arrive
+
+Netlify → *Logs* → *Functions* → `submission-created`. The function logs one line
+per submission and never fails the submission itself: if Resend rejects the send
+the form entry is still captured, so an email problem never costs an enquiry. The
+most common log line is a 403 from Resend, which means the domain is not verified.
+
+⚠️ **"award-winning advisors"** appears in the contact email at the firm's
+request. Troy's awards are real, but award claims in advisor marketing normally
+need the criteria disclosure, which the email footer carries. Worth putting to
+compliance, along with whether the plural is right — Robert's awards are not
+documented.
+
+---
+
 ## Running it locally
 
 ```bash

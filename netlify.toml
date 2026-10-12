@@ -5,6 +5,14 @@
   publish = "."
   command = ""
 
+# Confirmation emails to whoever fills in a form. Netlify fires the
+# "submission-created" event at the function of that name; it needs no npm
+# packages, so the site still has no build step. See README for the Resend
+# environment variables it expects.
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
 # The contact form posts here. Netlify resolves pretty URLs on its own, but an
 # explicit rewrite makes the POST redirect target unambiguous.
 [[redirects]]
