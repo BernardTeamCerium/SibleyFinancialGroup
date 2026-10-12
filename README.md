@@ -16,7 +16,6 @@ public sources. **Replace these first.**
 
 | What | Where | Current placeholder |
 |---|---|---|
-| Phone number | Every page (header, footer, contact) | `(985) 000-0000` / `tel:+19850000000` |
 | Email address | Every page | `info@sibleyfinancialgroup.com` |
 | Street address | `contact.html`, footer, `index.html` JSON-LD | City/state only — no street address |
 | Domain name | `<link rel="canonical">`, Open Graph tags, `sitemap.xml`, `robots.txt` | `https://www.sibleyfinancialgroup.com` |
@@ -28,7 +27,7 @@ public sources. **Replace these first.**
 Fastest way to do the first four:
 
 ```bash
-grep -rn "985) 000-0000\|+19850000000\|sibleyfinancialgroup.com" *.html *.xml *.txt
+grep -rn "sibleyfinancialgroup.com" *.html *.xml *.txt
 ```
 
 ### Content that should be verified
