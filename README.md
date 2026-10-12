@@ -32,6 +32,22 @@ grep -rn "sibleyfinancialgroup.com" *.html *.xml *.txt
 
 ### Content that should be verified
 
+**Robert Sibley's profile** on `about.html` was written from
+`meetrobertsibley.com` — paraphrased, not copied, but every fact still needs
+confirming: twenty years in financial services, fifteen leading teams, active
+licences in seven states, LSU Shreveport, and the personal details.
+
+Two things were deliberately left out and can be added back if he wants them:
+his **"$12M+ annual directed production"** figure, which is a sales metric
+rather than anything a retiree benefits from and the kind of claim compliance
+tends to strike; and any statement of how he is **related to Troy**, since the
+shared surname is not evidence and nobody has said.
+
+⚠️ **Confirm rights to his photograph** (`assets/img/robert-sibley.jpg`,
+cropped from `robert-2.png` on his site). Presumably fine if he is joining the
+team page, but it is his or his photographer's image, not the firm's by
+default.
+
 The copy on `about.html` was assembled from publicly available sources (LinkedIn, Marquis
 Who's Who, press releases). **Please confirm each claim before publishing**, in particular:
 
