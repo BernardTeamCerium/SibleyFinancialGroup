@@ -26,8 +26,8 @@
 'use strict';
 
 const FIRM = 'Sibley Financial Group';
-const PHONE_DISPLAY = '(985) 231-2167';
-const PHONE_HREF = '+19852312167';
+const PHONE_DISPLAY = '(985) 308-5558';
+const PHONE_HREF = '+19853085558';
 
 /* --------------------------------------------------------------- content - */
 /* One entry per Netlify form name. `contact` is also the fallback. */
